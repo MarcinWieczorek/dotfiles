@@ -1,0 +1,6 @@
+[user]
+	email = marcin@marcin.co
+	name = Marcin Wieczorek
+	signingkey = 1A02A345
+[commit]
+	gpgsign = true
