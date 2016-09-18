@@ -4,3 +4,5 @@
 	signingkey = 1A02A345
 [commit]
 	gpgsign = true
+[cola]
+	signcommits = true
