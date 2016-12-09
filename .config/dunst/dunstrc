@@ -1,0 +1,72 @@
+[global] # Global configuration
+    font = "Monospace 8"
+    # Allow html
+    allow_markup = yes
+
+    # Notification format
+    # %s - sumario
+    # %p - progreso
+    # %b - message content
+    format = "<b>%s %p</b>\n%b"
+
+    # Order
+    sort = yes
+
+    # Show hidden
+    indicate_hidden = true
+    idle_threshold = 0
+
+    # Measurements
+    geometry = "225x5-12+30"
+    alignment = center
+    show_age_threshold = 60
+    sticky_history = yes
+    follow = mouse
+    word_wrap = yes
+    separator_height = 2
+    padding = 10
+    horizontal_padding = 10
+    separator_color = frame
+    startup_notification = true
+
+# border
+[frame]
+    width = 3
+    color = "#607d8b"
+
+# key bindings
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+# Low priority
+[urgency_low]
+    background = "#3187ab"
+    foreground = "#dfdfdf"
+    timeout = 5
+
+# Normal priority
+[urgency_normal]
+    background = "#0f3246"
+    foreground = "#dfdfdf"
+    timeout = 10
+
+# Critical priority
+[urgency_critical]
+    background = "#1b579b"
+    foreground = "#dfdfdf"
+    timeout = 0
+
+# Test notification
+[test]
+    summary = "*test*"
+    background="#0088aa"
+
+
+# Pidgin signed on notification
+[signed_on]
+    appname = Pidgin
+    summary = "*signed on*"
+    urgency = low

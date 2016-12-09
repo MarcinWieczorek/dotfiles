@@ -1,0 +1,187 @@
+! URXVT-CONFIG
+!------------------------------------------------
+
+URxvt.buffered             : true
+URxvt.font                 : xft:Terminess Powerline:pixelsize=14:antialias=false
+URxvt.boldFont             : xft:Terminess Powerline:bold:pixelsize=14:antialias=false
+URxvt*scrollBar            : false
+URxvt*mouseWheelScrollPage : false
+URxvt*cursorBlink          : true
+URxvt.geometry             : 95x25+0+0
+URxvt*depth                : 32
+URxvt.intensityStyles      : true
+URxvt.fading               : 15
+
+! EXTENSIONS
+!-------------------------------------------------
+URxvt*perl-lib        : /usr/lib/urxvt/perl/
+URxvt*perl-ext-common : default,matcher,searchable-scrollback
+URxvt.cutchars        : "()*,<>[]{}|''"
+
+! URXVT COPY PASTE SHORTCUTS
+!------------------------------------------------
+
+URxvt.keysym.M-c : perl:clipboard:copy
+URxvt.keysym.M-v : perl:clipboard:pasteq
+
+! URXVT FULLSCREEN TOGGLE
+!------------------------------------------------
+
+URxvt.keysym.F11      : perl:fullscreen:switch
+URxvt.perl-ext-common : default,matcher,vtwheel
+URxvt.url-launcher    : /usr/bin/firefox
+URxvt.matcher.button  : 1
+
+! XTERM-CONFIG
+!------------------------------------------------
+
+! Fonts:
+Uxterm*faceName        : Terminess Powerline
+Uxterm*faceSize        : 8
+
+! Locale configuration
+UXTerm*locale          : true
+
+!Adjust line spacing
+UXTerm*scaleHeight     : 1.01
+
+! Default shell entry...
+UXTerm*loginshell      : true
+
+! Enable bell urgent
+Uxterm*bellIsUrgent    : true
+
+! Fix the 'Alt' key
+UXTerm*metaSendsEscape : true
+
+! scrollback...
+UXTerm*savelines       : 10000
+
+! Doble click selection URL...
+UXTerm*charClass       : 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+
+! Window geometry...
+Uxterm*VT100.geometry  : 94x28+0+0
+
+
+! URXVT + XTERM COLOR
+!------------------------------------------------
+
+!BLACK
+#define _color0        #0a1222
+#define _color8        #080e18
+
+!RED
+#define _color1        #a54242
+#define _color9        #cc6666
+
+!GREEN
+#define _color2        #8c9440
+#define _color10       #b5bd68
+
+!YELLOW
+#define _color3        #de935f
+#define _color11       #f0c674
+
+!BLUE
+#define _color4        #368ba8
+#define _color12       #75b6cb
+
+!MAGENTA
+#define _color5        #6a4875
+#define _color13       #b294bb
+
+!CYAN
+#define _color6        #115166
+#define _color14       #286478
+
+!WHITE
+#define _color7        #707880
+#define _color15       #c5c8c6
+
+!FMT Include, StatusLine, ErrorMsg
+#define _colorBD       #ffffff
+#define _colorUL       #355d5d
+#define _colorIT       #999999
+
+!TXT Normal, Normal, Cursor
+#define _foreground    #c5c8c6
+#define _background    #081a22
+#define _cursorColor   #368ba8
+
+
+URxvt*color0         : _color0
+URxvt*color1         : _color1
+URxvt*color2         : _color2
+URxvt*color3         : _color3
+URxvt*color4         : _color4
+URxvt*color5         : _color5
+URxvt*color6         : _color6
+URxvt*color7         : _color7
+URxvt*color8         : _color8
+URxvt*color9         : _color9
+URxvt*color10        : _color10
+URxvt*color11        : _color11
+URxvt*color12        : _color12
+URxvt*color13        : _color13
+URxvt*color14        : _color14
+URxvt*color15        : _color15
+URxvt*colorBD        : _colorBD
+URxvt*colorIT        : _colorIT
+URxvt*colorUL        : _colorUL
+URxvt*foreground     : _foreground
+URxvt*background     : [95]#081a22
+URxvt*cursorColor    : _cursorColor
+
+!rgba:0000/0000/0200/c800
+
+UXTerm*color0         : _color0
+UXTerm*color1         : _color1
+UXTerm*color2         : _color2
+UXTerm*color3         : _color3
+UXTerm*color4         : _color4
+UXTerm*color5         : _color5
+UXTerm*color6         : _color6
+UXTerm*color7         : _color7
+UXTerm*color8         : _color8
+UXTerm*color9         : _color9
+UXTerm*color10        : _color10
+UXTerm*color11        : _color11
+UXTerm*color12        : _color12
+UXTerm*color13        : _color13
+UXTerm*color14        : _color14
+UXTerm*color15        : _color15
+UXTerm*colorBD        : _colorBD
+UXTerm*colorIT        : _colorIT
+UXTerm*colorUL        : _colorUL
+UXTerm*foreground     : _foreground
+UXTerm*background     : _background
+UXTerm*cursorColor    : _cursorColor
+
+! ROFI
+!---------------------------------
+
+rofi.font        : terminal 12
+
+!                  'bg'      'fg'     'bgalt'  'hlbg'      'hlf'
+rofi.color-normal: #368ba8,  #DFDFDF, #012744, #c07830,    #222222
+rofi.color-urgent: #011015,  #d094e4, #000000, #d094e4,    #000000
+rofi.color-active: #011015,  #5f819d, #000000, #5f819d,    #000000
+
+!                  'background' 'border'
+rofi.color-window: #012744,     #c07830
+
+! XPDF
+!-------------------------------------
+xpdf*antialias      : yes
+xpdf*background     : white
+xpdf*enableFreetype : yes
+xpdf*foreground     : black
+xpdf*urlCommand     : chromium %s
+
+! Bindings
+!-------------------------------------
+URxvt.keysym.Control-Up    : \033[1;5A
+URxvt.keysym.Control-Down  : \033[1;5B
+URxvt.keysym.Control-Left  : \033[1;5D
+URxvt.keysym.Control-Right : \033[1;5C
