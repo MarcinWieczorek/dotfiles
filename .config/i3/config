@@ -419,7 +419,7 @@ bindsym $mod+Print --release          exec "scrot -u 'mv $f ~/Pictures'; sleep 1
 #:::::::::::::::::::: Startup applications ::::::::::::::::::::#
 ################################################################
 # DAEMON FILE MANAGER
-# exec --no-startup-id thunar --daemon
+exec --no-startup-id thunar --daemon
 
 # WIFI
 # exec --no-startup-id nm-applet
