@@ -55,6 +55,8 @@ assign [class="Pale moon"]         $ws2
 assign [class="Thunar"]            $ws3
 assign [class="Mousepad"]          $ws4
 assign [class="jetbrains-idea-ce"] $ws4
+assign [class="jetbrains-studio"]  $ws4
+assign [class="jetbrains-pycharm-ce"] $ws4
 assign [class="Atom"]              $ws4
 assign [class="Vlc"]               $ws5
 assign [class="mplayer"]           $ws5
@@ -406,7 +408,7 @@ bindsym $mod+F3       workspace $WS4; exec idea
 bindsym $mod+Shift+a                  exec atom
 bindsym $mod+F4                       exec urxvt -e ncmpcpp
 bindsym $mod+F7       workspace $WS9; exec lxappearance
-bindsym $mod+F8       workspace $WS9; exec pavucontrol # volume control
+bindsym $mod+F8       workspace $WS9; exec pavucontrol
 bindsym $mod+F9                       exec termite -e vim
 bindsym $mod+Shift+F1 workspace $WS2; exec xlinks
 bindsym $mod+Shift+x                  exec qterminal
