@@ -55,8 +55,6 @@ set nocompatible               " be iMproved
   syntax on
 
   set title
-  set mouse=a
-
   set shortmess=at      " shorten error messages
 
   set nrformats+=alpha  " in-/decrease letters with C-a/C-x
@@ -387,6 +385,12 @@ set nocompatible               " be iMproved
   nmap <C-down> ]e
   vmap <C-up> [egv
   vmap <C-down> ]egv
+" }}}
+" 'Disabling arrow keys' {{{
+  noremap <Up> <NOP>
+  noremap <Down> <NOP>
+  noremap <Left> <NOP>
+  noremap <Right> <NOP>
 " }}}
 " Formatting with Par (gqip) {{{
   set formatprg=par\ -req
