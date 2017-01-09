@@ -26,6 +26,7 @@ set nocompatible               " be iMproved
   Bundle 'tpope/vim-markdown'
   Bundle 'tpope/vim-unimpaired'
   Bundle 'scrooloose/nerdtree'
+  Bundle 'Xuyuanp/nerdtree-git-plugin'
 " Bundle 'msanders/snipmate.vim'
   Bundle 'MarcWeber/vim-addon-mw-utils'
   Bundle 'garbas/vim-snipmate'
@@ -379,6 +380,19 @@ set nocompatible               " be iMproved
 
   imap <C-Space> <C-X><Space>
   imap <C-CR> <C-X><CR>
+" }}}
+" 'NERDTree GIT' {{{
+  let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 " }}}
 " 'Bubbling' {{{
   nmap <C-up> [e
