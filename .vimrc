@@ -27,6 +27,7 @@ set nocompatible               " be iMproved
   Bundle 'tpope/vim-unimpaired'
   Bundle 'scrooloose/nerdtree'
   Bundle 'Xuyuanp/nerdtree-git-plugin'
+  Bundle 'jistr/vim-nerdtree-tabs'
 " Bundle 'msanders/snipmate.vim'
   Bundle 'MarcWeber/vim-addon-mw-utils'
   Bundle 'garbas/vim-snipmate'
@@ -362,7 +363,7 @@ set nocompatible               " be iMproved
   imap <tab> <C-r>=TriggerSnippet()<CR>
 " }}}
 " NERDTree {{{
-  map <F3> :NERDTreeToggle<CR>
+  map <F3> :NERDTreeTabsToggle<CR>
 
   let NERDTreeChDirMode = 2
   let NERDTreeShowBookmarks = 1
