@@ -2,8 +2,8 @@
 !------------------------------------------------
 
 URxvt.buffered             : true
-URxvt.font                 : xft:Terminess Powerline:pixelsize=14:antialias=false
-URxvt.boldFont             : xft:Terminess Powerline:bold:pixelsize=14:antialias=false
+URxvt.font                 : xft:xos4 Terminess Powerline:pixelsize=14:antialias=false
+URxvt.boldFont             : xft:xos4 Terminess Powerline:bold:pixelsize=14:antialias=false
 URxvt*scrollBar            : false
 URxvt*mouseWheelScrollPage : false
 URxvt*cursorBlink          : true
@@ -36,7 +36,7 @@ URxvt.matcher.button  : 1
 !------------------------------------------------
 
 ! Fonts:
-Uxterm*faceName        : Terminess Powerline
+Uxterm*faceName        : xos4 Terminess Powerline
 Uxterm*faceSize        : 8
 
 ! Locale configuration
