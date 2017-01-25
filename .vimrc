@@ -1,24 +1,24 @@
-"
-" V I M R C
-"
-"   @updated:   Mi 29 Jun 2012
-"   @revision:  3
+" _____             _        _ _ _ _                         _
+" |     |___ ___ ___|_|___   | | | |_|___ ___ ___ ___ ___ ___| |_
+" | | | | .'|  _|  _| |   |  | | | | | -_|  _|- _| . |  _| -_| '_|
+" |_|_|_|__,|_| |___|_|_|_|  |_____|_|___|___|___|___|_| |___|_,_|
+
 
 set nocompatible               " be iMproved
 
 " Vundle {{{
   filetype off
   set rtp+=~/.vim/bundle/vundle/
+  set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim/
   call vundle#rc()
 
-  " let Vundle manage Vundle
+" let Vundle manage Vundle
 " Bundle 'gmarik/vundle'
 
-  " Vundles
-  "
-  " github repos
+" Vundles
+"
+" github repos
   Bundle 'tpope/vim-fugitive'
-  Bundle 'tpope/vim-rails'
   Bundle 'tpope/vim-haml'
   Bundle 'tpope/vim-endwise'
   Bundle 'tpope/vim-surround'
@@ -41,15 +41,9 @@ set nocompatible               " be iMproved
   Bundle 'trapd00r/x11colors.vim'
   Bundle 'lilydjwg/colorizer'
   Bundle 'airblade/vim-gitgutter'
-  " Bundle 'fholgado/minibufexpl.vim'
   Bundle 'shemerey/vim-project'
-  Bundle 'wvffle/vimterm'
   " Bundle 'Twinside/vim-codeoverview'
-
-  " vim-scripts repos
-
-  " non github repos
-
+  Bundle 'davidhalter/jedi-vim'
 " }}}
 " General settings {{{
   filetype on
@@ -63,31 +57,25 @@ set nocompatible               " be iMproved
 
   set modeline          " enable modelines
   set modelines=5
-
   set number            " enable line numbers
   set ruler             " enable something
   set cursorline        " enable hiliting of cursor line
-
   set backspace=2       " backspace over EOL etc.
-
   set background=dark   " i prefer dark backgrounds
-
   set hidden            " buffer switching should be quick
   set confirm           " ask instead of just print errors
   set equalalways       " make splits equal size
-
-  set lazyredraw        " don't redraw while executing macros
-
+  set timeoutlen=1000   " fix delay when switching from insert to normal mode
+  set ttimeoutlen=0     " fix delay when switching from insert to normal mode
   set noshowmode        " don't display mode, it's already in the status line
-
+  set lazyredraw        " don't redraw while executing macros
+  set laststatus=2      " always show statusline
+  set showtabline=2     " always show tab line
+  let g:powerline_pycmd="py3"
   let mapleader=","
   let maplocalleader=","
 " }}}
 " General Keybinds {{{
-
-  " Set MapLeader
-  let mapleader = ","
-
   " Delete previous word with C-BS
   imap <C-BS> <C-W>
 
@@ -95,10 +83,6 @@ set nocompatible               " be iMproved
   map <F2> <Esc>:TSelectBuffer<CR>
   map <F4> <Esc>:TlistToggle<CR>
 
-   
-  " Set text wrapping toggles
-  nmap <silent> <leader>w :set invwrap<CR>:set wrap?<CR> 
-   
   " Set up retabbing on a source file
   nmap <silent> <leader>rr :1,$retab<CR> 
    
@@ -119,199 +103,16 @@ set nocompatible               " be iMproved
   nmap <M-k> :winc k<CR>
   nmap <M-l> :winc l<CR>
 " }}}
-" GUI or no GUI, that's the question {{{
-  if has('gui_running')
-    set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
-    set guioptions-=m               " No Menubar
-    set guioptions-=T               " No Toolbar
-    set guioptions-=l               " No Scrollbar left
-    set guioptions-=L               " No Scrollbar left when split
-    set guioptions-=r               " No Scrollbar right
-    set guioptions-=r               " No Scrollbar right when split
 
-    set laststatus=2                " always show statusline
-
-    " set gfn=Pragmata\ 6.5
-    set gfn=Neep\ Medium\ Semi-Condensed\ 9
-    " set gfn=Mensch\ 7
-
-    set lines=40                    " Height
-    set columns=85                  " Width
-
-    colorscheme nucolors
-
-  else
-        syntax on
-    colorscheme monokai
-        set t_Co=256
-  endif
-" }}}
-" Status line {{{
-  set laststatus=2      " always show statusline
-
-  " Generic Statusline {{{
-  function! SetStatus()
-    setl statusline+=
-          \%1*\ %f
-          \%H%M%R%W%7*\ ┃
-          \%2*\ %Y\ <<<\ %{&ff}%7*\ ┃
-  endfunction
-
-  function! SetRightStatus()
-    setl statusline+=
-          \%5*\ %{StatusFileencoding()}%7*\ ┃
-          \%5*\ %{StatusBuffersize()}%7*\ ┃
-          \%=%<%7*\ ┃
-          \%5*\ %{StatusWrapON()}
-          \%6*%{StatusWrapOFF()}\ %7*┃
-          \%5*\ %{StatusInvisiblesON()}
-          \%6*%{StatusInvisiblesOFF()}\ %7*┃
-          \%5*\ %{StatusExpandtabON()}
-          \%6*%{StatusExpandtabOFF()}\ %7*┃
-          \%5*\ w%{StatusTabstop()}\ %7*┃
-          \%3*\ %l,%c\ >>>\ %P
-          \\ 
-  endfunction " }}}
-
-  " Update when leaving Buffer {{{
-  function! SetStatusLeaveBuffer()
-    setl statusline=""
-    call SetStatus()
-  endfunction
-  au BufLeave * call SetStatusLeaveBuffer() " }}}
-
-  " Update when switching mode {{{
-  function! SetStatusInsertMode(mode)
-    setl statusline=%4*
-    if a:mode == 'i'
-      setl statusline+=\ Einfügen\ ◥
-    elseif a:mode == 'r'
-      setl statusline+=\ Ersetzen\ ◥
-    elseif a:mode == 'normal'
-      setl statusline+=\ \ ◥
-    endif
-    call SetStatus()
-    call SetRightStatus()
-  endfunction
-
-  au VimEnter     * call SetStatusInsertMode('normal')
-  au InsertEnter  * call SetStatusInsertMode(v:insertmode)
-  au InsertLeave  * call SetStatusInsertMode('normal')
-  au BufEnter     * call SetStatusInsertMode('normal') " }}}
-
-  " Some Functions shamelessly ripped and modified from Cream
-  "fileencoding (three characters only) {{{
-  function! StatusFileencoding()
-    if &fileencoding == ""
-      if &encoding != ""
-        return &encoding
-      else
-        return " -- "
-      endif
-    else
-      return &fileencoding
-    endif
-  endfunc " }}}
-  " &expandtab {{{
-  function! StatusExpandtabON()
-    if &expandtab == 0
-      return "tabs"
-    else
-      return ""
-    endif
-  endfunction "
-  function! StatusExpandtabOFF()
-    if &expandtab == 0
-      return ""
-    else
-      return "tabs"
-    endif
-  endfunction " }}}
-  " tabstop and softtabstop {{{
-  function! StatusTabstop()
-
-    " show by Vim option, not Cream global (modelines)
-    let str = "" . &tabstop
-    " show softtabstop or shiftwidth if not equal tabstop
-    if   (&softtabstop && (&softtabstop != &tabstop))
-    \ || (&shiftwidth  && (&shiftwidth  != &tabstop))
-      if &softtabstop
-        let str = str . ":sts" . &softtabstop
-      endif
-      if &shiftwidth != &tabstop
-        let str = str . ":sw" . &shiftwidth
-      endif
-    endif
-    return str
-
-  endfunction " }}}
-  " Buffer Size {{{
-  function! StatusBuffersize()
-    let bufsize = line2byte(line("$") + 1) - 1
-    " prevent negative numbers (non-existant buffers)
-    if bufsize < 0
-      let bufsize = 0
-    endif
-    " add commas
-    let remain = bufsize
-    let bufsize = ""
-    while strlen(remain) > 3
-      let bufsize = "," . strpart(remain, strlen(remain) - 3) . bufsize
-      let remain = strpart(remain, 0, strlen(remain) - 3)
-    endwhile
-    let bufsize = remain . bufsize
-    " too bad we can't use "¿" (nr2char(1068)) :)
-    let char = "b"
-    return bufsize . char
-  endfunction " }}}
-  " Show Invisibles {{{
-  function! StatusInvisiblesON()
-    "if exists("g:LIST") && g:LIST == 1
-    if &list
-      if     &encoding == "latin1"
-        return "¶"
-      elseif &encoding == "utf-8"
-        return "¶"
-      else
-        return "$"
-      endif
-    else
-      return ""
-    endif
-  endfunction
-  function! StatusInvisiblesOFF()
-    "if exists("g:LIST") && g:LIST == 1
-    if &list
-      return ""
-    else
-      if     &encoding == "latin1"
-        return "¶"
-      elseif &encoding == "utf-8"
-        return "¶"
-      else
-        return "$"
-      endif
-    endif
-  endfunction " }}}
-  " Wrap Enabled {{{
-  function! StatusWrapON()
-    if &wrap
-      return "wrap"
-    else
-      return ""
-    endif
-  endfunction
-  function! StatusWrapOFF()
-    if &wrap
-      return ""
-    else
-      return "wrap"
-    endif
-  endfunction
-  " }}}
+  " Color scheme {{{
+  syntax on
+  set guifont=xos4\ Terminess\ Powerline
+  set t_Co=256
+  let g:solarized_termcolors=256
+  colorscheme solarized
 " }}}
 " Invisibles {{{
-  set listchars=tab:>\ ,eol:<
+  set listchars=eol:¬,trail:█,nbsp:_,tab:»·
   set list
   nmap <silent> <F5> :set list!<CR>
 " }}}
@@ -322,11 +123,6 @@ set nocompatible               " be iMproved
   set autoindent
   set smartindent
   set expandtab
-" }}}
-" Invisibles {{{
-  set listchars=tab:>\ ,eol:<
-  set list
-  nmap <silent> <F5> :set list!<CR>
 " }}}
 " Folds {{{
 " set foldmethod=marker
@@ -374,14 +170,6 @@ set nocompatible               " be iMproved
 " toggle wrapping
   nmap <silent> <F12> :let &wrap = !&wrap<CR>
 " }}}
-" RagTag {{{
-  imap <M-O> <Esc>o
-  imap <C-J> <Down>
-  let g:ragtag_global_maps = 1
-
-  imap <C-Space> <C-X><Space>
-  imap <C-CR> <C-X><CR>
-" }}}
 " 'NERDTree GIT' {{{
   let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
@@ -410,11 +198,6 @@ set nocompatible               " be iMproved
 " Formatting with Par (gqip) {{{
   set formatprg=par\ -req
   nmap <F9> gqip
-" }}}
-" Pasting {{{
-  set paste
-  nnoremap p ]p
-  nnoremap <c-p> p
 " }}}
 " Macros {{{
   " Execute macro "q" with space
