@@ -15,20 +15,20 @@ URxvt.fading               : 15
 ! EXTENSIONS
 !-------------------------------------------------
 URxvt*perl-lib        : /usr/lib/urxvt/perl/
-URxvt*perl-ext-common : default,matcher,searchable-scrollback
+URxvt*perl-ext-common : default,matcher,searchable-scrollback,clipboard
 URxvt.cutchars        : "()*,<>[]{}|''"
 
 ! URXVT COPY PASTE SHORTCUTS
 !------------------------------------------------
 
 URxvt.keysym.M-c : perl:clipboard:copy
-URxvt.keysym.M-v : perl:clipboard:pasteq
+URxvt.keysym.M-v : perl:clipboard:paste
 
 ! URXVT FULLSCREEN TOGGLE
 !------------------------------------------------
 
 URxvt.keysym.F11      : perl:fullscreen:switch
-URxvt.perl-ext-common : default,matcher,vtwheel
+URxvt.perl-ext-common : default,matcher,vtwheel,clipboard
 URxvt.url-launcher    : /usr/bin/firefox
 URxvt.matcher.button  : 1
 
@@ -177,7 +177,7 @@ xpdf*antialias      : yes
 xpdf*background     : white
 xpdf*enableFreetype : yes
 xpdf*foreground     : black
-xpdf*urlCommand     : chromium %s
+xpdf*urlCommand     : firefox %s
 
 ! Bindings
 !-------------------------------------
