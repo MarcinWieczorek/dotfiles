@@ -446,9 +446,6 @@ exec --no-startup-id aarchup
 # MPD
 exec --no-startup-id mpd ~/.config/mpd/mpd.conf
 
-# run redshift
-exec redshift
-
 # Conky Monitor
 exec conky -d; sleep 1 && transset-df .5 -n Conky &
 ################################################################
