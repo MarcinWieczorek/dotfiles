@@ -51,7 +51,7 @@ set $WS0  10:
 ################################################################
 assign [class="chromium"]          $ws2
 assign [class="Firefox"]           $ws2
-assign [class="Pale moon"]         $ws2
+assign [class="git-cola"]          $ws3
 assign [class="Thunar"]            $ws3
 assign [class="Mousepad"]          $ws4
 assign [class="jetbrains-idea-ce"] $ws4
@@ -65,11 +65,13 @@ assign [class="Popcorn-Time"]      $ws5
 assign [class="Termite"]           $ws1
 assign [class="urxvt"]             $ws1
 assign [class="Franz"]             $ws6
+assign [class="Pidgin"]            $ws6
 assign [class="epdfview"]          $ws7
 assign [class="Gimp"]              $ws7
 assign [class="Inkscape"]          $ws7
 assign [class="Gnumeric"]          $ws7
 assign [class="libreoffice"]       $ws7
+assign [class="Astroid"]           $ws7
 assign [class="Transmission"]      $ws8
 assign [class="JDownloader"]       $ws8
 assign [class="Lxappearance"]      $ws9
