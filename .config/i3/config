@@ -203,19 +203,19 @@ bindsym XF86AudioPause       exec mpc toggle
 
 #:::::::::::::::::::::: Changing focus ::::::::::::::::::::::::#
 ################################################################
-bindsym $mod+Shift+f mode "focus"
+bindsym $mod+w mode "focus"
 
 mode "focus" {
-        bindsym $mod+h focus left
-        bindsym $mod+j focus down
-        bindsym $mod+k focus up
-        bindsym $mod+l focus right
+        bindsym $mod+h focus left; mode "default"
+        bindsym $mod+j focus down; mode "default"
+        bindsym $mod+k focus up; mode "default"
+        bindsym $mod+l focus right; mode "default"
 
         # alternatively, you can use the cursor keys:
-        bindsym $mod+Left  focus left
-        bindsym $mod+Down  focus down
-        bindsym $mod+Up    focus up
-        bindsym $mod+Right focus right
+        bindsym $mod+Left  focus left; mode "default"
+        bindsym $mod+Down  focus down; mode "default"
+        bindsym $mod+Up    focus up; mode "default"
+        bindsym $mod+Right focus right; mode "default"
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -253,7 +253,7 @@ bindsym $mod+f            fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s            layout stacking
-bindsym $mod+w            layout tabbed
+bindsym $mod+t            layout tabbed
 bindsym $mod+e            layout toggle split
 
 # toggle tiling / floating
