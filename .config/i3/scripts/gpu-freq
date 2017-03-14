@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pstate_file=/sys/kernel/debug/dri/0/pstate
+sudo pstate ${1}
+notify-send "GPU frequency has been set:\n$(sudo cat ${pstate_file}|grep AC:|cut -d : -f2|xargs -n3)"
+i3-msg mode "default"
+

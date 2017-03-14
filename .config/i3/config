@@ -313,6 +313,21 @@ mode "resize" {
 }
 ################################################################
 
+#:::::::::::::::::::: Setting GPU frequency :::::::::::::::::::#
+################################################################
+set $gpu-freq GPU Frequency: [1] [2]
+bindsym $mod+g mode "$gpu-freq"
+
+mode "$gpu-freq" {
+    bindsym 1 exec ~/.config/i3/scripts/gpu-freq 1
+    bindsym 2 exec ~/.config/i3/scripts/gpu-freq 2
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+################################################################
+
 #::::::::::::::::::: Settings for i3-gaps :::::::::::::::::::::#
 ################################################################
 # Set inner/outer gaps
