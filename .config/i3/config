@@ -440,8 +440,8 @@ bindsym $mod+Print --release          exec "scrot -u 'mv $f ~/Pictures'; sleep 1
 # DAEMON FILE MANAGER
 exec --no-startup-id thunar --daemon
 
-# WIFI
-# exec --no-startup-id nm-applet
+# .desktop entry handler
+exec --no-startup-id dex -a
 
 # wallpaper nitrogen
 exec --no-startup-id nitrogen ~/Pictures/wallpaper/ --restore
