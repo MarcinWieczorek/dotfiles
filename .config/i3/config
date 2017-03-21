@@ -79,6 +79,7 @@ assign [class="Pavucontrol"]       $ws9
 assign [class="imagewriter"]       $ws9
 assign [class="(?i)virtualbox"]    $ws9
 assign [class="minecraft"]         $ws0
+assign [class="Minecraft [0-9.]+"] $ws0
 assign [class="csgo_linux64"]      $ws0
 assign [class="Terraria.bin.x86"]  $ws0
 ################################################################
