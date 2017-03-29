@@ -419,7 +419,7 @@ mode "$mode_system" {
 bindsym $mod+m                        exec i3-msg move workspace to output left
 bindsym $mod+Shift+q                  kill
 bindsym $mod+Return   workspace $WS1; exec urxvt
-bindsym $mod+d                        exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -dmenu'
+bindsym $mod+d                        exec --no-startup-id ~/.config/i3/scripts/menu.sh
 bindsym $mod+F1       workspace $WS2; exec firefox
 bindsym $mod+F2       workspace $WS3; exec thunar
 bindsym $mod+F3       workspace $WS4; exec idea
