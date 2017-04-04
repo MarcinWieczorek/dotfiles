@@ -15,7 +15,6 @@ URxvt.fading               : 15
 ! EXTENSIONS
 !-------------------------------------------------
 URxvt*perl-lib        : /usr/lib/urxvt/perl/
-URxvt*perl-ext-common : default,matcher,searchable-scrollback,clipboard
 URxvt.cutchars        : "()*,<>[]{}|''"
 
 ! URXVT COPY PASTE SHORTCUTS
@@ -28,9 +27,12 @@ URxvt.keysym.M-v : perl:clipboard:paste
 !------------------------------------------------
 
 URxvt.keysym.F11      : perl:fullscreen:switch
-URxvt.perl-ext-common : default,matcher,vtwheel,clipboard
+URxvt.perl-ext-common : default,matcher,vtwheel,searchable-scrollback,clipboard
 URxvt.url-launcher    : /usr/bin/firefox
 URxvt.matcher.button  : 1
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
 
 ! XTERM-CONFIG
 !------------------------------------------------
