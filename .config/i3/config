@@ -418,22 +418,17 @@ mode "$mode_system" {
 ################################################################
 bindsym $mod+m                        exec i3-msg move workspace to output left
 bindsym $mod+Shift+q                  kill
-bindsym $mod+Return   workspace $WS1; exec urxvt
+bindsym Menu          workspace $WS1; exec urxvt
 bindsym $mod+d                        exec --no-startup-id ~/.config/i3/scripts/menu.sh
 bindsym $mod+F1       workspace $WS2; exec firefox
 bindsym $mod+F2       workspace $WS3; exec thunar
 bindsym $mod+F3       workspace $WS4; exec idea
-bindsym $mod+Shift+a                  exec atom
 bindsym $mod+F4                       exec urxvt -e ncmpcpp
 bindsym $mod+F7       workspace $WS9; exec lxappearance
-bindsym $mod+F8       workspace $WS9; exec pavucontrol
-bindsym $mod+F9                       exec termite -e vim
+bindsym $mod+F9                       exec urxvt -e vim
 bindsym $mod+Shift+F1 workspace $WS2; exec xlinks
-bindsym $mod+Shift+x                  exec qterminal
 bindsym $mod+Shift+F8 workspace $WS7; exec gimp
 bindsym $mod+n                        exec nitrogen
-bindsym $mod+p                        exec shutter
-bindsym $mod+Print --release          exec "scrot -u 'mv $f ~/Pictures'; sleep 1; exec notify-send 'screenshot has been saved to ~/Screenshots'"
 ################################################################
 
 #:::::::::::::::::::: Startup applications ::::::::::::::::::::#
@@ -458,9 +453,6 @@ exec --no-startup-id numlockx on
 
 # Update notifications
 exec --no-startup-id aarchup
-
-# MPD
-exec --no-startup-id mpd ~/.config/mpd/mpd.conf
 
 # Conky Monitor
 exec conky -d; sleep 1 && transset-df .5 -n Conky &
