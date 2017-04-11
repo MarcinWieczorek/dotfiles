@@ -61,7 +61,7 @@ plugins=(git common-aliases mvn sudo web-search)
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 export EDITOR=vim
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -106,11 +106,12 @@ fi
 export GPG_TTY=$(tty)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
 
+source /usr/share/doc/pkgfile/command-not-found.zsh
 source $ZSH/oh-my-zsh.sh
 
 # User-specific config
 unalias rm # rm -i
 export CHROOT=$HOME/chroot
-export TERMINAL=qterminal
+export TERMINAL=urxvt
 zstyle ':completion:*' rehash true
 source /usr/share/nvm/init-nvm.sh
