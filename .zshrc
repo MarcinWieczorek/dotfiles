@@ -8,7 +8,8 @@ export ZSH=$ZSH
 # time that oh-my-zsh is loaded.
 if [ -z $ZSH_THEME ]; then
 	PARENT_COMMAND="$(ps -o comm= $PPID)"
-	if [ ! $PARENT_COMMAND = "login" ]; then
+    if [ ! $PARENT_COMMAND = "login" ] \
+      && [ ! $PARENT_COMMAND = "tmux: server" ]; then
 		ZSH_THEME="agnoster"
 	else
 		ZSH_THEME="takashiyoshida"
