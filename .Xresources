@@ -10,6 +10,7 @@ URxvt*cursorBlink          : true
 URxvt.geometry             : 95x25+0+0
 URxvt*depth                : 32
 URxvt.intensityStyles      : true
+URxvt.urgentOnBell         : true
 URxvt.fading               : 15
 
 ! EXTENSIONS
@@ -65,31 +66,9 @@ UXTerm*charClass       : 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
 ! Window geometry...
 Uxterm*VT100.geometry  : 94x28+0+0
 
-
-! URXVT COLOR
-!------------------------------------------------
- URxvt*color0         : #0A1222
- URxvt*color1         : #A54242
- URxvt*color2         : #8C9440
- URxvt*color3         : #DE935F
- URxvt*color4         : #368BA8
- URxvt*color5         : #6A4875
- URxvt*color6         : #115166
- URxvt*color7         : #707880
- URxvt*color8         : #080E18
- URxvt*color9         : #CC6666
- URxvt*color10        : #B5BD68
- URxvt*color11        : #F0C674
- URxvt*color12        : #75B6CB
- URxvt*color13        : #B294BB
- URxvt*color14        : #286478
- URxvt*color15        : #C5C8C6
- URxvt*colorBD        : #FFFFFF
- URxvt*colorIT        : #999999
- URxvt*colorUL        : #355D5D
- URxvt*foreground     : #C5C8C6
- URxvt*background     : #081a22
- URxvt*cursorColor    : #368BA8
+! Includes
+!---------------------------------
+#include ".config/termcolors/hybrid_e7"
 
 !rgba:0000/0000/0200/c800
 
