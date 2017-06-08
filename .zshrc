@@ -115,4 +115,3 @@ unalias rm # rm -i
 export CHROOT=$HOME/chroot
 export TERMINAL=urxvt
 zstyle ':completion:*' rehash true
-source /usr/share/nvm/init-nvm.sh
