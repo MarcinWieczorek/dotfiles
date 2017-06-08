@@ -95,7 +95,7 @@ export LANG=en_US.UTF-8
 # default user:
 DEFAULT_USER='marcin'
 
-ZSH_CACHE_DIR=$HOME/.oh-my-zsh-cache
+ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
   mkdir $ZSH_CACHE_DIR
 fi
