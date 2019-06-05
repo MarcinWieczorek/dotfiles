@@ -6,3 +6,13 @@
 	gpgsign = true
 [cola]
 	signcommits = true
+	spellcheck = true
+	tabwidth = 4
+	fontdiff = Inconsolata,11,-1,5,50,0,0,0,0,0
+	expandtab = false
+	textwidth = 80
+	maxrecent = 10
+	savewindowsettings = true
+	boldheaders = true
+[gui]
+	editor = gvim

@@ -53,12 +53,21 @@ assign [class="chromium"]          $ws2
 assign [class="Firefox"]           $ws2
 assign [class="git-cola"]          $ws3
 assign [class="Thunar"]            $ws3
+assign [class="Code"]              $ws4
 assign [class="Mousepad"]          $ws4
 assign [class="jetbrains-idea-ce"] $ws4
+assign [class="jetbrains-idea"]    $ws4
 assign [class="jetbrains-studio"]  $ws4
 assign [class="jetbrains-pycharm-ce"] $ws4
+assign [class="jetbrains-pycharm"] $ws4
+assign [class="QtCreator"]         $ws4
 assign [class="Atom"]              $ws4
+assign [class="Blender"]           $ws4
+assign [class="Bless"]             $ws4
+assign [class="Poedit"]            $ws4
+assign [title="Logisim*"]          $ws4
 assign [class="Vlc"]               $ws5
+assign [class="vlc"]               $ws5
 assign [class="mplayer"]           $ws5
 assign [class="Soundconverter"]    $ws5
 assign [class="Popcorn-Time"]      $ws5
@@ -66,22 +75,43 @@ assign [class="Termite"]           $ws1
 assign [class="urxvt"]             $ws1
 assign [class="Franz"]             $ws6
 assign [class="Pidgin"]            $ws6
-assign [class="epdfview"]          $ws7
+assign [class="TeamSpeak 3"]       $ws6
+assign [class="Messenger for Desktop"] $ws6
+assign [class="Epdfview"]          $ws7
 assign [class="Gimp"]              $ws7
 assign [class="Inkscape"]          $ws7
 assign [class="Gnumeric"]          $ws7
-assign [class="libreoffice"]       $ws7
+assign [class="libreoffice-writer"] $ws7
 assign [class="Astroid"]           $ws7
+assign [class="libreoffice"]       $ws7
+assign [class="Texmaker"]          $ws7
+assign [class="Plan"]              $ws7
+assign [class="Wireshark-gtk"]     $ws8
+assign [class="IDA"]               $ws8
 assign [class="Transmission"]      $ws8
 assign [class="JDownloader"]       $ws8
+assign [class="Filezilla"]         $ws8
+assign [class="DBeaver"]           $ws8
+assign [class="SWT"]               $ws8
+assign [class="Deluge"]            $ws8
 assign [class="Lxappearance"]      $ws9
+assign [class="Blueberry.py"]      $ws9
 assign [class="Pavucontrol"]       $ws9
+assign [class="Wicd-client.py"]    $ws9
 assign [class="imagewriter"]       $ws9
 assign [class="(?i)virtualbox"]    $ws9
+assign [class="PlayOnLinux"]       $ws0
 assign [class="minecraft"]         $ws0
 assign [class="Minecraft [0-9.]+"] $ws0
 assign [class="csgo_linux64"]      $ws0
 assign [class="Terraria.bin.x86"]  $ws0
+assign [class="Technic Launcher"]  $ws0
+assign [title="Tekkit Classic"]    $ws0
+assign [class="net-technicpack-launcher-LauncherMain"]  $ws0
+assign [class="soldat.exe"]        $ws0
+assign [class="Steam"]             $ws0
+assign [class="pingus.bin"]        $ws0
+assign [class="Runescape"]         $ws0
 ################################################################
 
 #:::::::::::::::::: Border style settings :::::::::::::::::::::#
@@ -107,9 +137,12 @@ for_window [class="Lxappearance"]                 floating enable border normal
 for_window [class="Mousepad"]                     floating enable border normal
 for_window [class="Nitrogen"]                     floating enable border normal
 for_window [class="Pamac-update"]                 floating enable border normal
-for_window [class="Pavucontrol"]                  floating enable border normal
 for_window [class="Transmission-gtk"]             floating enable border normal
 for_window [class="(?i)virtualbox"]               floating enable border normal
+for_window [class="com.stirante.asem.Main"]       floating enable border normal
+for_window [title="Dydaktyczny System*"]          floating enable border normal
+for_window [class="PacketTracer7"]                floating enable border normal
+for_window [class="Yad"]                          floating enable
 ################################################################
 
 #::::::::::::::: Floating windows without borders :::::::::::::#
@@ -123,8 +156,6 @@ for_window [class="Termite"]        floating enable border pixel 4
 for_window [class="URxvt"]          floating enable border pixel 4
 for_window [class="Vlc"]            floating enable border pixel 1
 for_window [class="xarchiver"]      floating enable border pixel 1
-for_window [class="XTerm"]          floating enable border pixel 4
-for_window [class="QTerminal"]      floating enable border pixel 4
 for_window [class="imagewriter"]    floating enable border pixel 4
 ################################################################
 
@@ -407,15 +438,15 @@ mode "$mode_gaps_outer" {
 
 #:::::::::::::::::::::: System options ::::::::::::::::::::::::#
 ################################################################
-set $Locker i3lock-fancy
+set $Locker i3lock-fancy-dualmonitor
 set $mode_system System:   L :  | S :  | P :  | R :  | E : 
 bindsym $mod+x mode "$mode_system"
 
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym s exec --no-startup-id $Locker, sudo systemctl suspend, mode "default"
-    bindsym p exec --no-startup-id sudo systemctl poweroff -i, mode "default"
-    bindsym r exec --no-startup-id sudo systemctl reboot, mode "default"
+    bindsym s exec --no-startup-id $Locker; systemctl suspend, mode "default"
+    bindsym p exec --no-startup-id poweroff, mode "default"
+    bindsym r exec --no-startup-id reboot, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
 
     # back to normal: Enter or Escape
@@ -429,16 +460,30 @@ mode "$mode_system" {
 bindsym $mod+m                        exec i3-msg move workspace to output left
 bindsym $mod+Shift+q                  kill
 bindsym Menu          workspace $WS1; exec urxvt
-bindsym $mod+d                        exec --no-startup-id ~/.config/i3/scripts/menu.sh
 bindsym $mod+F1       workspace $WS2; exec firefox
 bindsym $mod+F2       workspace $WS3; exec thunar
 bindsym $mod+F3       workspace $WS4; exec idea
 bindsym $mod+F4                       exec urxvt -e ncmpcpp
+bindsym $mod+F5       workspace $WS1; exec urxvt
 bindsym $mod+F7       workspace $WS9; exec lxappearance
 bindsym $mod+F9                       exec urxvt -e vim
 bindsym $mod+Shift+F1 workspace $WS2; exec xlinks
 bindsym $mod+Shift+F8 workspace $WS7; exec gimp
 bindsym $mod+n                        exec nitrogen
+################################################################
+
+#:::::::::::::::::::::::: Screenshots :::::::::::::::::::::::::#
+################################################################
+set $mode_screenshots Take a screenshot! [1] [2]
+bindsym Print mode $mode_screenshots
+
+mode "$mode_screenshots" {
+    bindsym 1 --release exec scrot '%Y-%m-%d-%k%M%S.png' -se 'upsc $f'; mode "default"
+    bindsym 2 --release exec scrot '%Y-%m-%d-%k%M%S.png' -ue 'upsc $f'; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 ################################################################
 
 #:::::::::::::::::::: Startup applications ::::::::::::::::::::#
@@ -457,12 +502,13 @@ exec --no-startup-id compton -cCGb --backed glx --vsync opengl
 
 # Screen lock
 exec xautolock -time 10 -locker i3lock-fancy
+# exec i3lock -n -i /home/marcin/Pictures/i3lock-startup.png
 
 # Enable numlock
 exec --no-startup-id numlockx on
 
 # Update notifications
-exec --no-startup-id aarchup
+# exec --no-startup-id aarchup
 
 # Conky Monitor
 exec conky -d; sleep 1 && transset-df .5 -n Conky &

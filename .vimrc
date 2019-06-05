@@ -71,6 +71,8 @@ set nocompatible               " be iMproved
   set lazyredraw        " don't redraw while executing macros
   set laststatus=2      " always show statusline
   set showtabline=2     " always show tab line
+  set cc=80
+  set mouse=a
   let g:powerline_pycmd="py3"
   let mapleader=","
   let maplocalleader=","
@@ -84,11 +86,11 @@ set nocompatible               " be iMproved
   map <F4> <Esc>:TlistToggle<CR>
 
   " Set up retabbing on a source file
-  nmap <silent> <leader>rr :1,$retab<CR> 
-   
+  nmap <silent> <leader>rr :1,$retab<CR>
+
   " cd to the directory containing the file in the buffer
-  nmap <silent> <leader>cd :lcd %:h<CR> 
-   
+  nmap <silent> <leader>cd :lcd %:h<CR>
+
   " Make the directory that contains the file in the current buffer.
   " This is useful when you edit a file in a directory that doesn't
   " (yet) exist
@@ -118,7 +120,7 @@ set nocompatible               " be iMproved
 " }}}
 " Tabstops {{{
   set tabstop=4
-  set shiftwidth=2
+  set shiftwidth=4
   set softtabstop=4
   set autoindent
   set smartindent
@@ -194,10 +196,6 @@ set nocompatible               " be iMproved
   noremap <Down> <NOP>
   noremap <Left> <NOP>
   noremap <Right> <NOP>
-" }}}
-" Formatting with Par (gqip) {{{
-  set formatprg=par\ -req
-  nmap <F9> gqip
 " }}}
 " Macros {{{
   " Execute macro "q" with space
