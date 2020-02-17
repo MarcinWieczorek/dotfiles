@@ -81,9 +81,10 @@ assign [class="Epdfview"]          $ws7
 assign [class="Gimp"]              $ws7
 assign [class="Inkscape"]          $ws7
 assign [class="Gnumeric"]          $ws7
-assign [class="libreoffice-writer"] $ws7
 assign [class="Astroid"]           $ws7
 assign [class="libreoffice"]       $ws7
+assign [class="libreoffice-writer"] $ws7
+assign [class="libreoffice-calc"]  $ws7
 assign [class="Texmaker"]          $ws7
 assign [class="Plan"]              $ws7
 assign [class="Wireshark-gtk"]     $ws8
@@ -94,12 +95,14 @@ assign [class="Filezilla"]         $ws8
 assign [class="DBeaver"]           $ws8
 assign [class="SWT"]               $ws8
 assign [class="Deluge"]            $ws8
+assign [class="Postman"]           $ws8
 assign [class="Lxappearance"]      $ws9
 assign [class="Blueberry.py"]      $ws9
 assign [class="Pavucontrol"]       $ws9
 assign [class="Wicd-client.py"]    $ws9
 assign [class="imagewriter"]       $ws9
 assign [class="(?i)virtualbox"]    $ws9
+assign [class="Dwarf_Fortress"]    $ws0
 assign [class="PlayOnLinux"]       $ws0
 assign [class="minecraft"]         $ws0
 assign [class="Minecraft [0-9.]+"] $ws0
@@ -137,7 +140,6 @@ for_window [class="Lxappearance"]                 floating enable border normal
 for_window [class="Mousepad"]                     floating enable border normal
 for_window [class="Nitrogen"]                     floating enable border normal
 for_window [class="Pamac-update"]                 floating enable border normal
-for_window [class="Transmission-gtk"]             floating enable border normal
 for_window [class="(?i)virtualbox"]               floating enable border normal
 for_window [class="com.stirante.asem.Main"]       floating enable border normal
 for_window [title="Dydaktyczny System*"]          floating enable border normal
@@ -153,7 +155,7 @@ for_window [class="soundconverter"] floating enable border pixel 1
 for_window [class="Sonata"]         floating enable border pixel 4
 for_window [class="Terminator"]     floating enable border pixel 1
 for_window [class="Termite"]        floating enable border pixel 4
-for_window [class="URxvt"]          floating enable border pixel 4
+for_window [class="URxvt"]          floating enable border pixel 2
 for_window [class="Vlc"]            floating enable border pixel 1
 for_window [class="xarchiver"]      floating enable border pixel 1
 for_window [class="imagewriter"]    floating enable border pixel 4
@@ -233,6 +235,7 @@ bindsym XF86AudioMute        exec amixer -q set Master toggle
 bindsym XF86AudioNext        exec mpc next
 bindsym XF86AudioPrev        exec mpc prev
 bindsym XF86AudioPause       exec mpc toggle
+bindsym XF86WakeUp           exec mpc toggle
 ################################################################
 
 #:::::::::::::::::::::: Changing focus ::::::::::::::::::::::::#
@@ -284,6 +287,7 @@ bindsym $mod+v            split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f            fullscreen toggle
+bindsym $mod+shift+f      fullscreen toggle global
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s            layout stacking
@@ -297,7 +301,7 @@ bindsym $mod+Shift+space  floating toggle
 #::::::::::::::::: Top corner window position :::::::::::::::::#
 ################################################################
 bindsym $mod+Shift+p floating enable; resize set 560  px 340 px; sticky enable; move window to position 880 px 25 px
-bindsym $mod+Shift+m floating enable; resize set 1280 px 500 px; sticky enable; move window to position 10  px 390 px
+# bindsym $mod+Shift+m floating enable; resize set 1280 px 500 px; sticky enable; move window to position 10  px 390 px
 ################################################################
 
 #::::::::::::::::::::::: Minimalizing :::::::::::::::::::::::::#
@@ -314,6 +318,7 @@ bindsym $mod+minus       scratchpad show
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+bindsym $mod+c exec ~/.bin/dmenu_configs.sh
 ################################################################
 
 #::::::::::::::::::::: Resizing windows :::::::::::::::::::::::#
@@ -386,7 +391,7 @@ gaps outer $default_gaps_outer
 # gaps outer all plus 5
 
 # Smart gaps (gaps used if only more than one container on the workspace)
-smart_gaps on
+# smart_gaps on
 
 # Smart borders (draw borders around container only if it is not the only container on this workspace)
 # on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
@@ -439,31 +444,28 @@ mode "$mode_gaps_outer" {
 #:::::::::::::::::::::: System options ::::::::::::::::::::::::#
 ################################################################
 set $Locker i3lock-fancy-dualmonitor
-set $mode_system System:   L :  | S :  | P :  | R :  | E : 
-bindsym $mod+x mode "$mode_system"
-
-mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym s exec --no-startup-id $Locker; systemctl suspend, mode "default"
-    bindsym p exec --no-startup-id poweroff, mode "default"
-    bindsym r exec --no-startup-id reboot, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
+# set $mode_system System:   L :  | S :  | P :  | R :  | E : 
+# bindsym $mod+x mode "$mode_system"
+# bindsym $mod+l exec --no-startup-id $Locker
+#
+# mode "$mode_system" {
+#     bindsym l exec --no-startup-id $Locker, mode "default"
+#     bindsym s exec --no-startup-id $Locker; systemctl suspend, mode "default"
+#     bindsym p exec --no-startup-id poweroff, mode "default"
+#     bindsym r exec --no-startup-id reboot, mode "default"
+#     bindsym e exec --no-startup-id i3-msg exit, mode "default"
+#
+#     # back to normal: Enter or Escape
+#     bindsym Return mode "default"
+#     bindsym Escape mode "default"
+# }
 ################################################################
 
 #::::::::::::::::::: Application shortcuts ::::::::::::::::::::#
 ################################################################
-bindsym $mod+m                        exec i3-msg move workspace to output left
+bindsym $mod+m                      exec i3-msg move workspace to output left
+bindsym $mod+Shift+m                exec i3-msg move workspace to output right
 bindsym $mod+Shift+q                  kill
-bindsym Menu          workspace $WS1; exec urxvt
-bindsym $mod+F1       workspace $WS2; exec firefox
-bindsym $mod+F2       workspace $WS3; exec thunar
-bindsym $mod+F3       workspace $WS4; exec idea
-bindsym $mod+F4                       exec urxvt -e ncmpcpp
 bindsym $mod+F5       workspace $WS1; exec urxvt
 bindsym $mod+F7       workspace $WS9; exec lxappearance
 bindsym $mod+F9                       exec urxvt -e vim
@@ -511,5 +513,5 @@ exec --no-startup-id numlockx on
 # exec --no-startup-id aarchup
 
 # Conky Monitor
-exec conky -d; sleep 1 && transset-df .5 -n Conky &
+# exec conky -d; sleep 1 && transset-df .5 -n Conky &
 ################################################################
