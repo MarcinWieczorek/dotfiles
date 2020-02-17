@@ -6,15 +6,7 @@ export ZSH=$ZSH
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-if [ -z $ZSH_THEME ]; then
-	PARENT_COMMAND="$(ps -o comm= $PPID)"
-    if [ ! $PARENT_COMMAND = "login" ] \
-      && [ ! $PARENT_COMMAND = "tmux: server" ]; then
-		ZSH_THEME="agnoster"
-	else
-		ZSH_THEME="takashiyoshida"
-	fi
-fi
+ZSH_THEME="amuse"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -58,7 +50,7 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases mvn sudo web-search)
+plugins=(common-aliases mvn sudo web-search colored-man-pages django systemd)
 
 # User configuration
 
@@ -91,6 +83,9 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias emacs="emacs -nw"
+alias xclip="/usr/bin/xclip -selection c"
+alias ptpb="curl -F 'f:1=<-' ix.io"
 
 # default user:
 DEFAULT_USER='marcin'
@@ -108,10 +103,12 @@ export GPG_TTY=$(tty)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
 
 source /usr/share/doc/pkgfile/command-not-found.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 
 # User-specific config
 unalias rm # rm -i
 export CHROOT=$HOME/chroot
-export TERMINAL=urxvt
+export TERMINAL=alacritty
 zstyle ':completion:*' rehash true
+
