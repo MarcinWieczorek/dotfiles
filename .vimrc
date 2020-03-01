@@ -4,13 +4,12 @@
 " |_|_|_|__,|_| |___|_|_|_|  |_____|_|___|___|___|___|_| |___|_,_|
 
 
-set nocompatible               " be iMproved
+set nocompatible      " be iMproved
 
-" Vundle {{{
-  filetype off
-  set rtp+=~/.vim/bundle/vundle/
-  set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim/
-  call vundle#rc()
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim/
+call vundle#rc()
 
 " let Vundle manage Vundle
 " Bundle 'gmarik/vundle'
@@ -44,163 +43,106 @@ set nocompatible               " be iMproved
   Bundle 'shemerey/vim-project'
   " Bundle 'Twinside/vim-codeoverview'
   Bundle 'davidhalter/jedi-vim'
-" }}}
-" General settings {{{
-  filetype on
-  filetype plugin indent on
-  syntax on
 
-  set title
-  set shortmess=at      " shorten error messages
+filetype on
+filetype plugin indent on
+syntax on
 
-  set nrformats+=alpha  " in-/decrease letters with C-a/C-x
+set nrformats+=alpha  " in-/decrease letters with C-a/C-x
+set modeline          " enable modelines
+set modelines=5
+set number            " enable line numbers
+set ruler             " enable ruler
+set cursorline        " enable hiliting of cursor line
+set backspace=2       " backspace over EOL etc.
+set background=dark   " I prefer dark backgrounds
+set hidden            " buffer switching should be quick
+set confirm           " ask instead of just print errors
+set equalalways       " make splits equal size
+set lazyredraw        " don't redraw while executing macros
+set laststatus=2      " always show statusline
+set cc=80             " color column 80
+set mouse=a           " enable mouse
+set nowrap            " don't wrap long lines
 
-  set modeline          " enable modelines
-  set modelines=5
-  set number            " enable line numbers
-  set ruler             " enable something
-  set cursorline        " enable hiliting of cursor line
-  set backspace=2       " backspace over EOL etc.
-  set background=dark   " i prefer dark backgrounds
-  set hidden            " buffer switching should be quick
-  set confirm           " ask instead of just print errors
-  set equalalways       " make splits equal size
-  set timeoutlen=1000   " fix delay when switching from insert to normal mode
-  set ttimeoutlen=0     " fix delay when switching from insert to normal mode
-  set noshowmode        " don't display mode, it's already in the status line
-  set lazyredraw        " don't redraw while executing macros
-  set laststatus=2      " always show statusline
-  set showtabline=2     " always show tab line
-  set cc=80
-  set mouse=a
-  let g:powerline_pycmd="py3"
-  let mapleader=","
-  let maplocalleader=","
-" }}}
-" General Keybinds {{{
-  " Delete previous word with C-BS
-  imap <C-BS> <C-W>
+" Tabs
+set expandtab         " use spaces instead of tabs
+set tabstop=4         " tab is 4 spaces
+set shiftwidth=0      " use tabstop
+set softtabstop=0     " use tabstop
 
-  " Toggle Buffer Selection and list Tag Lists
-  map <F2> <Esc>:TSelectBuffer<CR>
-  map <F4> <Esc>:TlistToggle<CR>
+" Indent
+set autoindent        " start new line with indent
+set smartindent       " add indent on braces etc.
 
-  " Set up retabbing on a source file
-  nmap <silent> <leader>rr :1,$retab<CR>
+" Scrolling
+set scrolloff=5       " The cursor always is at middle height
+set sidescroll=5      " 5 columns when scrolling horizontally"
 
-  " cd to the directory containing the file in the buffer
-  nmap <silent> <leader>cd :lcd %:h<CR>
+" Search
+set incsearch         " auto go to matched text
+set smartcase         " Smart search, lowercase is ignorecase
 
-  " Make the directory that contains the file in the current buffer.
-  " This is useful when you edit a file in a directory that doesn't
-  " (yet) exist
-  nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
+" Invisibles
+set listchars=trail:█,nbsp:_,tab:»·
+set list
+nmap <silent> <F5> :set list!<CR>
 
-  " Increase @revision # by 1
-  nmap <silent> <leader>incr /@updated wwwd$"=strftime("%a %d %b %Y") p/@revision $
-" }}}
-" {{{ Window movement
-  nmap <M-h> :winc h<CR>
-  nmap <M-j> :winc j<CR>
-  nmap <M-k> :winc k<CR>
-  nmap <M-l> :winc l<CR>
-" }}}
+" Toggle highlight search
+nmap <silent> ,n :set invhls<CR>:set hls?<CR>
+"
+" Backup files
+set nobackup
+set nowb
+set noswapfile
 
-  " Color scheme {{{
-  syntax on
-  set guifont=xos4\ Terminess\ Powerline
-  set t_Co=256
-  let g:solarized_termcolors=256
-  colorscheme solarized
-" }}}
-" Invisibles {{{
-  set listchars=eol:¬,trail:█,nbsp:_,tab:»·
-  set list
-  nmap <silent> <F5> :set list!<CR>
-" }}}
-" Tabstops {{{
-  set tabstop=4
-  set shiftwidth=4
-  set softtabstop=4
-  set autoindent
-  set smartindent
-  set expandtab
-" }}}
-" Folds {{{
-" set foldmethod=marker
-" set foldcolumn=1
-  " au BufWinLeave * mkview
-  " au BufWinEnter * silent loadview
-" }}}
-" Pairings {{{
-  set showmatch
-" }}}
-" Margins {{{
-  set scrolloff=5
-  set sidescroll=5
-" }}}
-" Search {{{
-  set incsearch
-  set ignorecase
+" Completion
+set wildmenu
+set wildmode=longest,full,list
+set ofu=syntaxcomplete#Complete
 
-  " Toggle that stupid highlight search
-  nmap <silent> ,n :set invhls<CR>:set hls?<CR> 
-" }}}
-" Backup files {{{
-  set nobackup
-  set nowb
-  set noswapfile
-" }}}
-" Completion {{{
-  set wildmenu
-  set wildmode=longest,full,list
-
-  set ofu=syntaxcomplete#Complete
-" }}}
-" Snipmate {{{
-  imap <tab> <C-r>=TriggerSnippet()<CR>
-" }}}
-" NERDTree {{{
-  map <F3> :NERDTreeTabsToggle<CR>
-
-  let NERDTreeChDirMode = 2
-  let NERDTreeShowBookmarks = 1
-" }}}
-" Wrapping {{{
-  set linebreak
-  set showbreak=↳\ 
+" NERDTree
+map <F3> :NERDTreeTabsToggle<CR>
+let NERDTreeChDirMode = 2
+let NERDTreeShowBookmarks = 1
+let g:NERDTreeIndicatorMapCustom = {
+\ "Modified"  : "✹",
+\ "Staged"    : "✚",
+\ "Untracked" : "✭",
+\ "Renamed"   : "➜",
+\ "Unmerged"  : "═",
+\ "Deleted"   : "✖",
+\ "Dirty"     : "✗",
+\ "Clean"     : "✔︎",
+\ "Unknown"   : "?"
+\ }
+"
+" Wrapping
+set linebreak
+set showbreak=↳\ 
 " toggle wrapping
-  nmap <silent> <F12> :let &wrap = !&wrap<CR>
-" }}}
-" 'NERDTree GIT' {{{
-  let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
-" }}}
-" 'Bubbling' {{{
-  nmap <C-up> [e
-  nmap <C-down> ]e
-  vmap <C-up> [egv
-  vmap <C-down> ]egv
-" }}}
-" 'Disabling arrow keys' {{{
-  noremap <Up> <NOP>
-  noremap <Down> <NOP>
-  noremap <Left> <NOP>
-  noremap <Right> <NOP>
-" }}}
-" Macros {{{
-  " Execute macro "q" with space
-  nmap <Space> @q
-  " Map @ to + for more comfortable macros on DE kb layout
-  nmap + @
-" }}}
+nmap <silent> <F12> :let &wrap = !&wrap<CR>
 
+" Move lines with CTRL
+nmap <C-up> [e
+nmap <C-down> ]e
+vmap <C-up> [egv
+vmap <C-down> ]egv
+
+"Disabling arrow keys
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" Open help in new tab
+:cabbrev help tab help
+
+" Color scheme
+let mapleader=","
+let maplocalleader=","
+set t_Co=256
+colorscheme gruvbox
+
+" Update Xresources
+autocmd BufWritePost .Xresources !xrdb %
