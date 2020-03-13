@@ -17,32 +17,24 @@ call vundle#rc()
 " Vundles
 "
 " github repos
-  Bundle 'tpope/vim-fugitive'
-  Bundle 'tpope/vim-haml'
+" Add #endif to CPP
   Bundle 'tpope/vim-endwise'
-  Bundle 'tpope/vim-surround'
-  Bundle 'tpope/vim-ragtag'
-  Bundle 'tpope/vim-markdown'
   Bundle 'tpope/vim-unimpaired'
   Bundle 'scrooloose/nerdtree'
   Bundle 'Xuyuanp/nerdtree-git-plugin'
   Bundle 'jistr/vim-nerdtree-tabs'
-" Bundle 'msanders/snipmate.vim'
-  Bundle 'MarcWeber/vim-addon-mw-utils'
-  Bundle 'garbas/vim-snipmate'
+" Tracks time spent on projects
+  Bundle 'wakatime/vim-wakatime'
   Bundle 'ervandew/supertab'
   Bundle 'tomtom/tlib_vim'
   Bundle 'tomtom/tcomment_vim'
   Bundle 'tomtom/tselectbuffer_vim'
-" Bundle 'tsaleh/vim-matchit'
   Bundle 'vim-scripts/taglist.vim'
   Bundle 'Townk/vim-autoclose'
   Bundle 'trapd00r/x11colors.vim'
   Bundle 'lilydjwg/colorizer'
+" Shows changed lines in a file
   Bundle 'airblade/vim-gitgutter'
-  Bundle 'shemerey/vim-project'
-  " Bundle 'Twinside/vim-codeoverview'
-  Bundle 'davidhalter/jedi-vim'
 
 filetype on
 filetype plugin indent on
@@ -101,6 +93,9 @@ set wildmenu
 set wildmode=longest,full,list
 set ofu=syntaxcomplete#Complete
 
+" Support XDG
+set viminfo+='1000,n$XDG_DATA_HOME/vim/viminfo
+
 " NERDTree
 map <F3> :NERDTreeTabsToggle<CR>
 let NERDTreeChDirMode = 2
@@ -146,3 +141,6 @@ colorscheme gruvbox
 
 " Update Xresources
 autocmd BufWritePost .Xresources !xrdb %
+
+" Reload sxhkd on config write
+autocmd BufWritePost ~/.config/sxhkd/sxhkdrc :silent !pkill -USR1 -x sxhkd

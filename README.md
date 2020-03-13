@@ -13,14 +13,15 @@ my main distribution, but I use some of the configs on debian machines as well.
 | Email sync | offlineimap |
 | Terminal file manager | vifm |
 | GUI file manager | thunar |
-| Window Manager | bspwm |
-| Key daemon | sxhkd |
 | Torrent client | Transmission |
-| Launcher | albert |
 | Video player | vlc |
 | Audio player | mopidy + mpd + mpc |
 | Screen lock | slock |
+| Window Manager | bspwm |
 | Display manager | ly |
+| Bar | polybar |
+| Key daemon | sxhkd |
+| Launcher | albert |
 | Editor | vim, emacs |
 | Dotfile manager | yadm |
 

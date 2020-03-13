@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# Run key daemon
+# sxhkd &
+
+# Run common programs
+dex -a
+
+# Restore wallpaper
+# nitrogen --restore
+feh --bg-fill /home/marcin/Pictures/wallpaper/synnek1337/imgs/yo3ontb1gwa31.jpg --no-fehbg
+
+# Fix for java parenting
+wmname LG3D
+
+# Restore normal cursor
+xsetroot -cursor_name left_ptr
+
+# Assign desktops to monitors
+if xrandr | grep -P 'DP-?[0-9] connected'; then
+    # PC at work
+    bspc monitor DVI-D-0 -d I II
+    bspc monitor DP-1 -d III IV IX X
+    bspc monitor DP-3 -d V VI VII VIII
+elif xrandr | grep LVDS; then
+    interface=`xrandr | awk '/LVDS/ {print $1}'`
+    bspc monitor "$interface" -d I II III IV V VI VII VIII IX X
+else
+    # PC at home
+    bspc monitor HDMI-0 -d I II IV V
+    bspc monitor HDMI-1 -d III VI VII VIII IX X
+fi
+
+# Run polybars for each monitor
+pkill polybar
+for m in `xrandr | awk '/ connected/ {print $1}'`; do
+    MONITOR=$m polybar --reload example &
+done
+
+# If running with testoro keyboard enable software debouncing.
+# Remember kids, don't spill your tea on the keyboard.
+if lsusb | grep "Itron Technology iONE Gaming keyboard"; then
+    xkbset bo 50; xkbset exp \=bo
+fi
+
+# Basic settings
+bspc config border_width         2
+bspc config window_gap           12
+bspc config split_ratio          0.52
+
+# Automatic focus
+bspc config focus_follows_pointer true
+
+# Rules
+bspc rule -a Screenkey manage=off
+
+# my rules
+
+# General
+bspc rule -a albert border=off focus=on
+
+# II - Files
+bspc rule -a Thunar desktop='II'
+bspc rule -a git-cola desktop='II'
+
+# III - Web
+bspc rule -a firefox border=off desktop='III'
+
+# IV - Programming
+bspc rule -a jetbrains-pycharm border=off desktop='IV'
+bspc rule -a jetbrains-idea border=off desktop='IV'
+bspc rule -a Atom border=off desktop='IV'
+
+# V - Video
+bspc rule -a qtwebflix desktop='V'
+bspc rule -a LBRY desktop='V' fulscreen=off
+
+# VI - Messaging
+bspc rule -a Pidgin desktop='VI'
+bspc rule -a Gajim desktop='VI'
+
+# VII - Documents
+bspc rule -a Soffice desktop='VII'
+bspc rule -a Texmaker desktop='VII'
+bspc rule -a MuPDF desktop='VII'
+bspc rule -a Gimp desktop='VII'
+
+# VIII - Tools
+bspc rule -a Postman desktop='VIII'
+bspc rule -a Wireshark desktop='VIII'
+bspc rule -a 'VirtualBox Manager' desktop='VIII'
+
+# IX - Settings
+bspc rule -a Pavucontrol desktop='IX'
+bspc rule -a transmission-gtk desktop='IX'
+
+# X - Games
+bspc desktop X -l monocle
+bspc rule -a Wine desktop='X'
+bspc rule -a Steam desktop='X'
+bspc rule -a lutris desktop='X'
+bspc rule -a net-technicpack-launcher-LauncherMain desktop='X'
+bspc rule -a factorio desktop='X' fullscreen=off
+
+sxhkd &
