@@ -1,3 +1,7 @@
+" set runtimepath^=~/.vim runtimepath+=~/.vim/after
+" let &packpath = &runtimepath
+" source ~/.vimrc
+
 " _____             _        _ _ _ _                         _
 " |     |___ ___ ___|_|___   | | | |_|___ ___ ___ ___ ___ ___| |_
 " | | | | .'|  _|  _| |   |  | | | | | -_|  _|- _| . |  _| -_| '_|
@@ -20,21 +24,32 @@ call vundle#rc()
 " Add #endif to CPP
   Bundle 'tpope/vim-endwise'
   Bundle 'tpope/vim-unimpaired'
+" File manager tree
   Bundle 'scrooloose/nerdtree'
   Bundle 'Xuyuanp/nerdtree-git-plugin'
   Bundle 'jistr/vim-nerdtree-tabs'
 " Tracks time spent on projects
   Bundle 'wakatime/vim-wakatime'
+" Allows completion with tab
   Bundle 'ervandew/supertab'
-  Bundle 'tomtom/tlib_vim'
+" Code commenting key bindings
   Bundle 'tomtom/tcomment_vim'
-  Bundle 'tomtom/tselectbuffer_vim'
-  Bundle 'vim-scripts/taglist.vim'
+" Adds closing brackets
   Bundle 'Townk/vim-autoclose'
-  Bundle 'trapd00r/x11colors.vim'
+" Colorize hex codes
   Bundle 'lilydjwg/colorizer'
 " Shows changed lines in a file
   Bundle 'airblade/vim-gitgutter'
+" Live reload HTML/CSS/JS pages
+  Bundle 'jaxbot/browserlink.vim'
+" Hylang support
+  Bundle 'hylang/vim-hy'
+" LaTeX support
+  Bundle 'lervag/vimtex'
+" Gruvbox theme
+  Bundle 'morhetz/gruvbox'
+" python auto import
+  Bundle 'mgedmin/python-imports.vim'
 
 filetype on
 filetype plugin indent on
@@ -111,7 +126,7 @@ let g:NERDTreeIndicatorMapCustom = {
 \ "Clean"     : "✔︎",
 \ "Unknown"   : "?"
 \ }
-"
+
 " Wrapping
 set linebreak
 set showbreak=↳\ 

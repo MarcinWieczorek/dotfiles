@@ -31,7 +31,7 @@ super + shift + F2
 
 # email client
 super + F3
-    alacritty -e zsh -c "emacs -nw -f notmuch"
+    emacs -f notmuch
 
 # program launcher
 super + d
