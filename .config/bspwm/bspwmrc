@@ -78,6 +78,7 @@ bspc rule -a LBRY desktop='V' fulscreen=off
 # VI - Messaging
 bspc rule -a Pidgin desktop='VI'
 bspc rule -a Gajim desktop='VI'
+bspc rule -a Emacs desktop='VI' state=tiled
 
 # VII - Documents
 bspc rule -a Soffice desktop='VII'
@@ -92,13 +93,13 @@ bspc rule -a 'VirtualBox Manager' desktop='VIII'
 
 # IX - Settings
 bspc rule -a Pavucontrol desktop='IX'
-bspc rule -a transmission-gtk desktop='IX'
+bspc rule -a Transmission-gtk desktop='IX'
 
 # X - Games
 bspc desktop X -l monocle
 bspc rule -a Wine desktop='X'
 bspc rule -a Steam desktop='X'
-bspc rule -a lutris desktop='X'
+bspc rule -a Lutris desktop='X'
 bspc rule -a net-technicpack-launcher-LauncherMain desktop='X'
 bspc rule -a factorio desktop='X' fullscreen=off
 

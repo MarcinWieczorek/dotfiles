@@ -22,12 +22,12 @@ my main distribution, but I use some of the configs on debian machines as well.
 | Bar | polybar |
 | Key daemon | sxhkd |
 | Launcher | albert |
-| Editor | vim, emacs |
+| Editor | neovim, emacs |
 | Dotfile manager | yadm |
 
 ## What will you find here
 ### Config files for
-- vim
+- neovim
 - i3
 - bspwm
 - sxhkd
