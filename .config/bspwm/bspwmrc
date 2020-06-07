@@ -1,14 +1,23 @@
 #!/bin/bash
 
 # Run key daemon
-# sxhkd &
+sxhkd &
 
 # Run common programs
-dex -a
+gajim &
+nm-applet &
+kdeconnect-indicator &
+albert &
+
+# Run compositor
+picom &
+
+# Turn NumLock on
+numlockx
 
 # Restore wallpaper
 # nitrogen --restore
-feh --bg-fill /home/marcin/Pictures/wallpaper/synnek1337/imgs/yo3ontb1gwa31.jpg --no-fehbg
+feh --bg-fill /home/marcin/Pictures/wallpaper/nixos-gruvbox.png --no-fehbg
 
 # Fix for java parenting
 wmname LG3D
@@ -20,15 +29,15 @@ xsetroot -cursor_name left_ptr
 if xrandr | grep -P 'DP-?[0-9] connected'; then
     # PC at work
     bspc monitor DVI-D-0 -d I II
-    bspc monitor DP-1 -d III IV IX X
-    bspc monitor DP-3 -d V VI VII VIII
+    bspc monitor DP-1 -d III IV X
+    bspc monitor DP-3 -d V VI VII VIII IX
 elif xrandr | grep LVDS; then
     interface=`xrandr | awk '/LVDS/ {print $1}'`
     bspc monitor "$interface" -d I II III IV V VI VII VIII IX X
 else
     # PC at home
-    bspc monitor HDMI-0 -d I II IV V
-    bspc monitor HDMI-1 -d III VI VII VIII IX X
+    bspc monitor HDMI-0 -d I II IV V VIII X
+    bspc monitor HDMI-1 -d III VI VII IX
 fi
 
 # Run polybars for each monitor
@@ -65,6 +74,7 @@ bspc rule -a git-cola desktop='II'
 
 # III - Web
 bspc rule -a firefox border=off desktop='III'
+bspc rule -a Brave-browser border=off desktop='III'
 
 # IV - Programming
 bspc rule -a jetbrains-pycharm border=off desktop='IV'
@@ -84,12 +94,13 @@ bspc rule -a Emacs desktop='VI' state=tiled
 bspc rule -a Soffice desktop='VII'
 bspc rule -a Texmaker desktop='VII'
 bspc rule -a MuPDF desktop='VII'
-bspc rule -a Gimp desktop='VII'
+bspc rule -a Gimp-2.10 desktop='VII'
 
 # VIII - Tools
 bspc rule -a Postman desktop='VIII'
 bspc rule -a Wireshark desktop='VIII'
 bspc rule -a 'VirtualBox Manager' desktop='VIII'
+bspc rule -a filezilla desktop='VIII'
 
 # IX - Settings
 bspc rule -a Pavucontrol desktop='IX'
@@ -102,5 +113,7 @@ bspc rule -a Steam desktop='X'
 bspc rule -a Lutris desktop='X'
 bspc rule -a net-technicpack-launcher-LauncherMain desktop='X'
 bspc rule -a factorio desktop='X' fullscreen=off
+bspc rule -a TombRaider desktop='X'
+bspc rule -a "epicgameslauncher.exe" desktop='X'
+bspc rule -a "Terraria.bin.x86_64" desktop='X'
 
-sxhkd &

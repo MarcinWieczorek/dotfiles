@@ -112,3 +112,9 @@ export CHROOT=$HOME/chroot
 export TERMINAL=alacritty
 zstyle ':completion:*' rehash true
 
+# dotfile-war
+export CCACHE_DIR="$XDG_CACHE_HOME/ccache"
+export TASKDATA="$XDG_DATA_HOME"/task
+export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
+export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
+

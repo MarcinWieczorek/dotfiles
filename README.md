@@ -65,3 +65,7 @@ my main distribution, but I use some of the configs on debian machines as well.
 
 ## TODO list
 - push all existing configs (most of the time they are unstaged mess)
+
+## Snippets:
+Run CTRL+R inside firefox
+`xdotool search --onlyvisible --class "Firefox" windowfocus key --window %@ 'ctrl+r'`

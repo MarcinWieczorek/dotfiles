@@ -51,6 +51,8 @@ super + alt + l
 
 XF86AudioPlay
     mpc toggle
+Pause
+    mpc toggle
 
 XF86WakeUp
     mpc toggle
