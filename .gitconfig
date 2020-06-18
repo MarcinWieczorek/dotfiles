@@ -14,5 +14,7 @@
 	maxrecent = 10
 	savewindowsettings = true
 	boldheaders = true
+	theme = flat-dark-blue
+	icontheme = dark
 [gui]
 	editor = gvim

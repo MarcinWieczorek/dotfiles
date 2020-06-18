@@ -6,10 +6,14 @@
 # super +:
 # F1     - browser
 # F2     - file manager
+# S-F2   - gui file manager
 # F3     - email
+# S-F3   - email address lookup
 # return - terminal
 # alt+l  - screenlock
 # Q      - kill window
+# W      - create new desktop
+# b      - connect to bluetooth device
 # -----------------
 
 # terminal emulator
@@ -33,9 +37,36 @@ super + shift + F2
 super + F3
     emacs -f notmuch
 
+# email address lookup
+super + shift + F3
+    notmuch address '*' \
+        | rofi -dmenu \
+            -theme gruvbox-dark-soft \
+            -font "Inconsolata 11" \
+            -p "Search address" \
+            -i \
+        | grep -oP '(?!.*<)[^>\s\r\n]+' \
+        | tr -d '\n' \
+        | /usr/bin/xclip -selection c
+
 # program launcher
 super + d
     albert show
+
+super + D
+    rofi -show drun -theme gruvbox-dark-soft -font "Inconsolata 11" -show-icons
+
+# connect to bluetooth device
+super + b
+    bluetoothctl devices \
+        | cut -d' ' -f 2- \
+        | rofi -dmenu \
+            -theme gruvbox-dark-soft \
+            -font "Inconsolata 11" \
+            -p "Connect to bluetooth device" \
+            -i \
+        | cut -d' ' -f1 \
+        | xargs bluetoothctl connect
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -197,7 +228,7 @@ super + {Left,Down,Up,Right}
 
 # CUSTOM BY MW
 # Create new desktop on current monitor
-super + D
+super + W
     name=`echo -n"" | dmenu -f -p "Window name:" | tr -d '\n'`; \
     name=`[ "$name" ] || shuf -n1 /usr/share/dict/cracklib-small`; \
     bspc monitor -f -a $name
