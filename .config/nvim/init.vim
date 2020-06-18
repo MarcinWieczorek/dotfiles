@@ -50,6 +50,8 @@ call vundle#rc()
   Bundle 'morhetz/gruvbox'
 " python auto import
   Bundle 'mgedmin/python-imports.vim'
+" ansible yaml support
+  Bundle "pearofducks/ansible-vim"
 
 filetype on
 filetype plugin indent on
@@ -153,6 +155,9 @@ let mapleader=","
 let maplocalleader=","
 set t_Co=256
 colorscheme gruvbox
+
+" Custom file types
+au BufRead,BufNewFile */*.playbook.yml set filetype=yaml.ansible
 
 " Update Xresources
 autocmd BufWritePost .Xresources !xrdb %
