@@ -50,7 +50,8 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(common-aliases mvn sudo web-search colored-man-pages django systemd)
+plugins=(common-aliases mvn sudo web-search colored-man-pages django systemd
+         virtualenv)
 
 # User configuration
 
@@ -114,6 +115,10 @@ zstyle ':completion:*' rehash true
 
 # dotfile-war
 export CCACHE_DIR="$XDG_CACHE_HOME/ccache"
+export ATOM_HOME="$XDG_DATA_HOME/atom"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export LESSKEY="$XDG_CONFIG_HOME"/less/lesskey
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export TASKDATA="$XDG_DATA_HOME"/task
 export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
 export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"

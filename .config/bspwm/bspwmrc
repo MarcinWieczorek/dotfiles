@@ -26,19 +26,23 @@ wmname LG3D
 xsetroot -cursor_name left_ptr
 
 # Assign desktops to monitors
-if xrandr | grep -P 'DP-?[0-9] connected'; then
-    # PC at work
-    bspc monitor DVI-D-0 -d I II
-    bspc monitor DP-1 -d III IV X
-    bspc monitor DP-3 -d V VI VII VIII IX
-elif xrandr | grep LVDS; then
-    interface=`xrandr | awk '/LVDS/ {print $1}'`
-    bspc monitor "$interface" -d I II III IV V VI VII VIII IX X
-else
-    # PC at home
-    bspc monitor HDMI-0 -d I II IV V VIII X
-    bspc monitor HDMI-1 -d III VI VII IX
-fi
+connected_monitors=`xrandr | grep -oP '.*(?= connected)' | xargs`
+case "$connected_monitors" in
+    "HDMI-0 DP-3")
+        bspc monitor DP-3 -d I II IV VIII VI
+        bspc monitor HDMI-0 -d III V VII IX X
+        ;;
+    "HDMI-0 HDMI-1" )
+        bspc monitor HDMI-0 -d I II IV VIII VI
+        bspc monitor HDMI-1 -d III V VII IX X
+        ;;
+    "HDMI-0" )
+        bspc monitor HDMI-0 -d I II III IV V VI VII VIII IX X
+        ;;
+    "LVDS1" )
+        bspc monitor LVDS1 -d I II III IV V VI VII VIII IX X
+        ;;
+esac
 
 # Run polybars for each monitor
 pkill polybar
