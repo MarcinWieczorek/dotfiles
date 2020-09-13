@@ -48,6 +48,7 @@ my main distribution, but I use some of the configs on debian machines as well.
 | MOD + F2 | Open terminal file manager |
 | MOD + Shift + F2 | Open gui file manager |
 | MOD + F3 | Open email client |
+| MOD + F4 | Open emacs |
 | MOD + d | Open launcher |
 | MOD + Meta + l | Lock the screen |
 | MOD + Meta + q | Quit window manager |

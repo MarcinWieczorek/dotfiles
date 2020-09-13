@@ -9,6 +9,7 @@
 # S-F2   - gui file manager
 # F3     - email
 # S-F3   - email address lookup
+# F4     - emacs
 # return - terminal
 # alt+l  - screenlock
 # Q      - kill window
@@ -36,6 +37,9 @@ super + shift + F2
 # email client
 super + F3
     emacs -f notmuch
+
+super + F4
+    emacsclient -nc -s instance1
 
 # email address lookup
 super + shift + F3
@@ -73,7 +77,9 @@ super + Escape
     pkill -USR1 -x sxhkd
 
 # run screenlock
-super + alt + l
+super + shift + x
+    slock
+XF86ScreenSaver
     slock
 
 #
@@ -81,11 +87,6 @@ super + alt + l
 #
 
 XF86AudioPlay
-    mpc toggle
-Pause
-    mpc toggle
-
-XF86WakeUp
     mpc toggle
 
 XF86AudioPrev
@@ -102,6 +103,12 @@ XF86AudioLowerVolume
 
 XF86AudioRaiseVolume
     amixer -q set Master 5%+
+
+XF86MonBrightnessUp
+    xbacklight -inc 10
+
+XF86MonBrightnessDown
+    xbacklight -dec 10
 
 #
 # bspwm hotkeys

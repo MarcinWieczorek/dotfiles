@@ -84,9 +84,9 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias emacs="emacs -nw"
 alias xclip="/usr/bin/xclip -selection c"
 alias ptpb="curl -F 'f:1=<-' ix.io"
+alias e="emacsclient -s instance1 -n "
 
 # default user:
 DEFAULT_USER='marcin'

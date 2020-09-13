@@ -92,7 +92,7 @@ bspc rule -a LBRY desktop='V' fulscreen=off
 # VI - Messaging
 bspc rule -a Pidgin desktop='VI'
 bspc rule -a Gajim desktop='VI'
-bspc rule -a Emacs desktop='VI' state=tiled
+bspc rule -a Emacs state=tiled
 
 # VII - Documents
 bspc rule -a Soffice desktop='VII'
