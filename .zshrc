@@ -2,6 +2,10 @@
 ZSH=/usr/share/oh-my-zsh/
 export ZSH=$ZSH
 
+export XDG_CONFIG_HOME="$HOME/.config/"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -42,6 +46,9 @@ DISABLE_AUTO_UPDATE="true"
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # HIST_STAMPS="mm/dd/yyyy"
+HISTSIZE=50000
+SAVEHIST=$HISTSIZE
+export HISTFILE="$XDG_DATA_HOME"/zsh/history
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -106,20 +113,11 @@ echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
 source /usr/share/doc/pkgfile/command-not-found.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
+source "$XDG_CONFIG_HOME/xdg_war.sh"
 
 # User-specific config
 unalias rm # rm -i
 export CHROOT=$HOME/chroot
 export TERMINAL=alacritty
 zstyle ':completion:*' rehash true
-
-# dotfile-war
-export CCACHE_DIR="$XDG_CACHE_HOME/ccache"
-export ATOM_HOME="$XDG_DATA_HOME/atom"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export LESSKEY="$XDG_CONFIG_HOME"/less/lesskey
-export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
-export TASKDATA="$XDG_DATA_HOME"/task
-export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
-export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
-
+bindkey '^H' backward-kill-word

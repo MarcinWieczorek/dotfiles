@@ -121,3 +121,4 @@ bspc rule -a TombRaider desktop='X'
 bspc rule -a "epicgameslauncher.exe" desktop='X'
 bspc rule -a "Terraria.bin.x86_64" desktop='X'
 
+tail --pid=$PPID -f /dev/null
