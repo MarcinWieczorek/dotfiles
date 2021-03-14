@@ -19,3 +19,12 @@ servers.
 -> localhost:53000 (stubby)
 -> 1.1.1.1:53 over TLS (cloudflare)
 #+END_SRC
+** =[0101]= Alternative docker root dir
+- My /var is fairly small (separate partition)
+- My docker data dir gets huge (I build many huge images)
+- My /home is also separate and is the biggest partition
+So I moved /docker data dir/ from =/var/lib/docker= to =/home/docker=.
+The playbook copies old data to new location only if new location
+doesn't exist, so the process is safe.  Note that despite the location
+(which is configurable with a variable) it has nothing to do with
+posix system users.

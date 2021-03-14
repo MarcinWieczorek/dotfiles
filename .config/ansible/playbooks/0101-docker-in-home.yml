@@ -1,0 +1,74 @@
+- name: Setup secure DNS
+  hosts: managed
+  vars:
+  - docker_old_home: /var/lib/docker
+  - docker_new_home: /home/docker
+
+  tasks:
+  - name: Install docker
+    pacman:
+      name: docker
+      state: present
+
+  - name: Stop docker service
+    systemd:
+      name: docker.service
+      state: stopped
+    notify:
+    - Start docker service
+
+  - name: Stop docker socket
+    systemd:
+      name: docker.socket
+      state: stopped
+    notify:
+    - Start docker socket
+
+  - name: Change docker home
+    replace:
+      path: /lib/systemd/system/docker.service
+      regexp: "^(ExecStart=/usr/bin/dockerd -H fd://)$"
+      replace: "\\1 -g {{ docker_new_home }}"
+
+  - name: Validate docker.service
+    command: systemd-analyze verify docker.service
+    changed_when: False
+
+  - name: Reload systemd
+    systemd:
+      daemon_reexec: yes
+      daemon_reload: yes
+
+  - name: Check if any data is present in old docker home
+    stat:
+      path: "{{ docker_old_home }}"
+    register: docker_old_home_stat
+
+  - name: Create new docker home
+    file:
+      path: "{{ docker_new_home }}"
+      state: directory
+      owner: root
+      group: root
+      mode: '711'
+    register: docker_new_home_create
+
+  - name: Synchronize docker data
+    # noqa: no-handler
+    shell:
+      chdir: "{{ docker_old_home }}"
+      cmd: tar -cvf - . | tar xvfC - "{{ docker_new_home }}"
+      warn: false
+    when: docker_new_home_create.changed
+          and docker_old_home_stat.stat.exists
+
+  handlers:
+  - name: Start docker service
+    systemd:
+      name: docker.service
+      state: started
+
+  - name: Start docker socket
+    systemd:
+      name: docker.socket
+      state: started
