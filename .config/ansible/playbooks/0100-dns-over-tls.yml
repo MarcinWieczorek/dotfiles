@@ -1,0 +1,80 @@
+- name: Setup secure DNS
+  hosts: managed
+
+  tasks:
+  - name: Install stubby and dnsmasq
+    pacman:
+      name:
+      - stubby
+      - dnsmasq
+      state: present
+
+  - name: stubby - Remove default upstreams
+    replace:
+      path: /etc/stubby/stubby.yml
+      after: "DEFAULT UPSTREAMS"
+      before: "OPTIONAL UPSTREAMS"
+      regexp: "^(?!=#)(  .*)$"
+      replace: "#\\1"
+
+  - name: stubby - uncomment cloudflare (ipv4)
+    replace:
+      dest: /etc/stubby/stubby.yml
+      after: "## Cloudflare"
+      before: "## The Uncensored DNS servers"
+      regexp: "^#(  .*)"
+      replace: "\\1"
+
+  - name: stubby - uncomment cloudflare (ipv4)
+    replace:
+      dest: /etc/stubby/stubby.yml
+      after: "## Cloudflare servers"
+      before: "## Google"
+      regexp: "^#(  .*)"
+      replace: "\\1"
+
+  - name: stubby - Change listen port to 53000
+    replace:
+      dest: /etc/stubby/stubby.yml
+      after: "listen_addresses:"
+      regexp: "(- (127.0.0.1|0::1))$"
+      replace: "\\1@53000"
+
+  - name: Change dnsmasq connect port to 53000
+    blockinfile:
+      path: /etc/dnsmasq.conf
+      insertafter: EOF
+      content: |
+        no-resolv
+        proxy-dnssec
+        server=::1#53000
+        server=127.0.0.1#53000
+        listen-address=::1,127.0.0.1
+
+  - name: dnsmasq - Start and enable service
+    systemd:
+      name: dnsmasq
+      enabled: yes
+      state: restarted
+
+  - name: stubby - Start and enable service
+    systemd:
+      name: stubby
+      enabled: yes
+      state: restarted
+
+  - name: Allow modification of resolv.conf
+    file:
+      path: /etc/resolv.conf
+      attr: -i
+
+  - name: Set resolv to localhost (dnsmasq)
+    copy:
+      dest: /etc/resolv.conf
+      mode: '0644'
+      content: "nameserver 127.0.0.1\n"
+
+  - name: Prevent modification of resolv.conf
+    file:
+      path: /etc/resolv.conf
+      attr: +i
