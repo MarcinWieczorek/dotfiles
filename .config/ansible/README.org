@@ -1,4 +1,4 @@
-#+TITLE: Ansible based system setup (ArchLinux
+#+TITLE: Ansible based system setup (ArchLinux)
 
 * Playbook naming convention
 | prefix      | purpose                   |
@@ -8,8 +8,8 @@
 
 * Current playbooks
 ** =[0100]= DNS over TLS
-Based on ArchWiki article: https://wiki.archlinux.org/index.php/Stubby
-Stubby based proxy with dnsmasq as cache for system-wide forwarding of
+Based on ArchWiki article: https://wiki.archlinux.org/index.php/Stubby \\
+/Stubby/ based proxy with /dnsmasq/ as cache for system-wide forwarding of
 DNS queries and responses over secure connections. =/etc/resolv.conf=
 is locked with =chattr= to prevent modification. Uses Cloudflare DNS
 servers.
