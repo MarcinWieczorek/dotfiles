@@ -1,13 +1,24 @@
 - name: Setup secure DNS
   hosts: managed
+  vars:
+    resolvconf_correct: "nameserver 127.0.0.1"
 
   tasks:
-  - name: Install stubby and dnsmasq
+  - name: (Arch) Install stubby and dnsmasq
     pacman:
       name:
       - stubby
       - dnsmasq
       state: present
+    when: ansible_distribution == "Archlinux"
+
+  - name: (Debian) Install stubby and dnsmasq
+    apt:
+      name:
+      - stubby
+      - dnsmasq
+      state: present
+    when: ansible_facts.os_family == "Debian"
 
   - name: stubby - Remove default upstreams
     replace:
@@ -52,29 +63,37 @@
         listen-address=::1,127.0.0.1
 
   - name: dnsmasq - Start and enable service
-    systemd:
+    service:
       name: dnsmasq
       enabled: yes
-      state: restarted
+      state: started
 
   - name: stubby - Start and enable service
-    systemd:
+    service:
       name: stubby
       enabled: yes
-      state: restarted
+      state: started
+
+  - name: Read contents of resolv.conf
+    command: cat /etc/resolv.conf
+    changed_when: false
+    register: resolvconf_content
 
   - name: Allow modification of resolv.conf
     file:
       path: /etc/resolv.conf
       attr: -i
+    when: resolvconf_content.stdout != resolvconf_correct
 
   - name: Set resolv to localhost (dnsmasq)
     copy:
       dest: /etc/resolv.conf
       mode: '0644'
-      content: "nameserver 127.0.0.1\n"
+      content: "{{ resolvconf_correct }}"
+    when: resolvconf_content.stdout != resolvconf_correct
 
   - name: Prevent modification of resolv.conf
     file:
       path: /etc/resolv.conf
       attr: +i
+    when: resolvconf_content.stdout != resolvconf_correct

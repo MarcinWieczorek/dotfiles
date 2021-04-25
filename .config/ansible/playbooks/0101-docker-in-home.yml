@@ -1,4 +1,4 @@
-- name: Setup secure DNS
+- name: Change docker data dir to /home
   hosts: managed
   vars:
   - docker_old_home: /var/lib/docker
