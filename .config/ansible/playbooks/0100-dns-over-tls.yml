@@ -20,6 +20,14 @@
       state: present
     when: ansible_facts.os_family == "Debian"
 
+  - name: (Void) Install stubby and dnsmasq
+    xbps:
+      name:
+      - stubby
+      - dnsmasq
+      state: present
+    when: ansible_facts.os_family == "void"
+
   - name: stubby - Remove default upstreams
     replace:
       path: /etc/stubby/stubby.yml
@@ -89,7 +97,7 @@
     copy:
       dest: /etc/resolv.conf
       mode: '0644'
-      content: "{{ resolvconf_correct }}"
+      content: "{{ resolvconf_correct }}\n"
     when: resolvconf_content.stdout != resolvconf_correct
 
   - name: Prevent modification of resolv.conf
