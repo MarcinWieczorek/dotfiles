@@ -55,7 +55,7 @@ super + shift + F3
 
 # program launcher
 super + d
-    albert show
+    rofi -show combi -theme gruvbox-dark-soft -font "Inconsolata 15" -show-icons -combi-modi calc:~/.config/rofi/show_calc.sh,drun
 
 super + D
     rofi -show drun -theme gruvbox-dark-soft -font "Inconsolata 11" -show-icons

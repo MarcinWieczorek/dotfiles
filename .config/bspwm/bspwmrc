@@ -7,7 +7,6 @@ sxhkd &
 gajim &
 nm-applet &
 kdeconnect-indicator &
-albert &
 
 # Run compositor
 picom &
