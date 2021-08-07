@@ -28,3 +28,61 @@ The playbook copies old data to new location only if new location
 doesn't exist, so the process is safe.  Note that despite the location
 (which is configurable with a variable) it has nothing to do with
 posix system users.
+** =[0104]= LUKS Solokey
+Adds Solokey credentials on top of =[0010]=, but should work on any
+arch-based distro. The playbook assumes that some packages are in
+official repositories (and I have them in my unofficial one added to
+pacman) but they can be built separately or with =ansible-aur=. The
+playbook requires entering the PIN for the hardware key and also the
+LUKS password. Make sure you trust the environment before running.
+*** Changed initcpio hook
+Also, for the moment the playbook won't work because of changed initcpio hook. I want the credentials to be stored in LUKS header (tokens) so I don't need them in the config file.
+
+Apply this patch:
+#+BEGIN_SRC diff
+--- solokey-full-disk-encryption/src/hooks/skfde	2021-08-04 15:58:59.246666665 +0200
++++ /usr/lib/initcpio/hooks/skfde	2021-08-07 18:02:51.269999999 +0200
+@@ -34,29 +34,23 @@
+
+   read -s -p 'Enter the SoloKey PIN: ' PIN
+
+-  echo -n $PIN > $SKFDE_PIN_SOURCE
+   message "Generate the SoloKey response"
+-  _skfde_response="$(fido2luks print-secret $SKFDE_CREDENTIAL \
+-    --salt string:$SKFDE_CHALLENGE --pin --pin-source $SKFDE_PIN_SOURCE 2>&1)"
++  echo -n $PIN | fido2luks open-token $SKFDE_LUKS_DEV $SKFDE_LUKS_NAME \
++    --salt string:$SKFDE_CHALLENGE \
++    --pin --pin-source $SKFDE_PIN_SOURCE 2>&1
+   _response=$?
+-  shred -u $SKFDE_PIN_SOURCE
+   if [ "$_response" -eq 0 ]; then
+     message "Received SoloKey Response"
+   else
+     message "SoloKey Challenge-Response failed"
+   fi
+
+-  message "Passing SoloKey response to cryptsetup"
+-  _tmp="$(printf %s "$_skfde_response" | cryptsetup luksOpen \
+-    $SKFDE_LUKS_DEV $SKFDE_LUKS_NAME 2>&1)"
+-  _rc=$?
+-
+- if [ "$_rc" -eq 0 ]; then
++ if [ "$_response" -eq 0 ]; then
+    message "Decryption was successful"
+    sleep "$SKFDE_SLEEP_AFTER_SUCCESSFUL_CRYPTSETUP"
+    return 0
+  else
+-   message "FAILED! [$_rc] $_tmp"
++   message "FAILED! [$_response] $_tmp"
+    return 1
+  fi
+ }
+#END_SRC
+*** TODO
+- [ ] add debian installation if possible
+- [ ] allow enrolling with key on host side
+- [X] change DEADBEEF to something (random?)
+- [X] reuse existing credentials on the key
+- [ ] contribute to fido2luks with initcpio hook
+- [ ] changing HOOKS should be smarter (replace encrypt with skfde but
+  do not overwrite the whole line)

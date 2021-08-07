@@ -1,0 +1,104 @@
+- name: Add Solokey to LUKS
+  hosts: managed
+  vars:
+    luks_device: /dev/vda3
+    challenge_generator: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+
+  vars_prompt:
+  - name: solokey_pin
+    prompt: Enter Solokey PIN
+  - name: luks_pass
+    prompt: Enter LUKS password
+
+  tasks:
+  - name: (Arch) Install dependencies
+    pacman:
+      name:
+      - rust
+      - fido2luks
+      - solokey-full-disk-encryption
+      state: present
+    when: ansible_distribution == "Archlinux"
+
+  - name: Get current credential from the key
+    shell: |
+      solo key credential ls --pin {{ solokey_pin }} \
+          | awk '/fido2luks/ {print $3}' \
+          | base64 -d \
+          | xxd -ps -c140
+    register: solo_cred
+    changed_when: solo_cred.rc == 1
+    failed_when: not solo_cred.stdout
+
+  - name: Add credential - PHYSICALLY CONFIRM WITH THE KEY!
+    when: solo_cred.changed
+    command:
+      cmd: fido2luks credential --pin --pin-source /dev/stdin
+      stdin: "{{ solokey_pin }}"
+    register: skfde_cred
+
+  - name: Check for credential in LUKS tokens
+    when: not skfde_cred.changed
+    command: "fido2luks token list {{ luks_device }}"
+    register: fido2luks_token_list
+    changed_when: 'solo_cred.stdout not in fido2luks_token_list.stdout'
+
+  - name: Add device to skfde.conf
+    replace:
+      path: /etc/skfde.conf
+      regexp: 'SKFDE_LUKS_DEV=".*"'
+      replace: 'SKFDE_LUKS_DEV="{{ luks_device }}"'
+
+  - name: Retrieve existing salt
+    shell: "source /etc/skfde.conf && echo $SKFDE_CHALLENGE"
+    register: existing_challenge
+    changed_when: not existing_challenge.stdout
+
+  - name: Set credential_id and challenge facts
+    set_fact:
+      credential_id: "{{ skfde_cred.stdout if 'stdout' in skfde_cred else solo_cred.stdout }}"
+      challenge: "{{ existing_challenge.stdout or challenge_generator }}"
+
+  - name: Add challenge to skfde.conf
+    replace:
+      path: /etc/skfde.conf
+      regexp: 'SKFDE_CHALLENGE=".*"'
+      replace: 'SKFDE_CHALLENGE="{{ challenge }}"'
+
+  - name: Create a temporary file for the password
+    when: fido2luks_token_list.changed
+    tempfile:
+    register: luks_pass_file
+    changed_when: no
+
+  - name: Put LUKS password in temporary file
+    when: fido2luks_token_list.changed
+    copy:
+      dest: "{{ luks_pass_file.path }}"
+      content: "{{ luks_pass }}"
+    diff: no
+    changed_when: no
+
+  - name: Add new key to LUKS - PHYSICALLY CONFIRM WITH THE KEY!
+    when: fido2luks_token_list.changed
+    shell:
+      cmd: |
+        fido2luks add-key /dev/vda3 {{ credential_id }} \
+            --salt string:{{ challenge }} \
+            --pin \
+            --pin-source=/dev/stdin \
+            --token \
+            --keyfile {{ luks_pass_file.path }}
+      stdin: "{{ solokey_pin }}"
+    register: passphrase
+
+  - name: Replace encrypt hook with skfde
+    replace:
+      path: /etc/mkinitcpio.conf
+      regexp: "HOOKS=\\(base udev keyboard autodetect modconf block encrypt lvm2 filesystems fsck\\)"
+      replace: "HOOKS=(base udev keyboard autodetect modconf block skfde lvm2 filesystems fsck)"
+    register: mkinitcpio_conf
+
+  - name: Regenerate the initramfs
+    when: mkinitcpio_conf.changed
+    command: mkinitcpio -P
