@@ -77,7 +77,7 @@ Apply this patch:
     return 1
   fi
  }
-#END_SRC
+#+END_SRC
 *** TODO
 - [ ] add debian installation if possible
 - [ ] allow enrolling with key on host side
