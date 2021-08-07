@@ -14,10 +14,6 @@ picom &
 # Turn NumLock on
 numlockx
 
-# Restore wallpaper
-# nitrogen --restore
-feh --bg-fill /home/marcin/Pictures/wallpaper/nixos-gruvbox.png --no-fehbg
-
 # Fix for java parenting
 wmname LG3D
 
@@ -38,10 +34,23 @@ case "$connected_monitors" in
     "HDMI-0" )
         bspc monitor HDMI-0 -d I II III IV V VI VII VIII IX X
         ;;
+    "HDMI-0 DP-0" )
+	xrandr --output DP-0 --mode 2560x1440 --pos 0x0 --output HDMI-0 --pos 2560x0
+        bspc monitor DP-0 -d I II IV VIII VI
+        bspc monitor HDMI-0 -d III V VII IX X
+	;;
+    "DVI-D-0 DP-3" )
+	xrandr --output DP-3 --mode 1920x1080 --pos 0x0 --output DVI-D-0 --pos 1920x0
+        bspc monitor DP-3 -d I II IV VIII VI
+        bspc monitor DVI-D-0 -d III V VII IX X
+	;;
     "LVDS1" )
         bspc monitor LVDS1 -d I II III IV V VI VII VIII IX X
         ;;
 esac
+
+# Restore wallpaper
+feh --bg-fill $HOME/Pictures/wallpaper/nixos-gruvbox.png --no-fehbg
 
 # Run polybars for each monitor
 pkill polybar
@@ -56,8 +65,7 @@ if lsusb | grep "Itron Technology iONE Gaming keyboard"; then
 fi
 
 # Basic settings
-bspc config border_width         2
-bspc config window_gap           12
+bspc config border_width         1
 bspc config split_ratio          0.52
 
 # Automatic focus

@@ -93,7 +93,9 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias xclip="/usr/bin/xclip -selection c"
 alias ptpb="curl -F 'f:1=<-' ix.io"
+alias ssh='TERM=linux ssh'
 alias e="emacsclient -s instance1 -n "
+alias dc="docker-compose"
 
 # default user:
 DEFAULT_USER='marcin'

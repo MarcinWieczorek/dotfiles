@@ -9,20 +9,20 @@ my main distribution, but I use some of the configs on debian machines as well.
 | Browser | Firefox |
 | Terminal emulator | alacritty |
 | Email client | emacs |
-| Email backend | notmuch |
-| Email sync | offlineimap |
+| Email backend | maildir |
+| Email sync | isync |
 | Terminal file manager | vifm |
 | GUI file manager | thunar |
 | Torrent client | Transmission |
-| Video player | vlc |
+| Video player | mpv |
 | Audio player | mopidy + mpd + mpc |
 | Screen lock | slock |
 | Window Manager | bspwm |
 | Display manager | ly |
 | Bar | polybar |
 | Key daemon | sxhkd |
-| Launcher | albert |
-| Editor | neovim, emacs |
+| Launcher | rofi |
+| Editor | emacs |
 | Dotfile manager | yadm |
 
 ## What will you find here

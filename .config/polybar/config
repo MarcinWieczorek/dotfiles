@@ -138,7 +138,7 @@ label-empty-padding = 2
 
 [module/mpd]
 type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+format-online = <icon-prev> <icon-stop> <toggle> <icon-next>
 
 icon-prev = 
 icon-stop = 
@@ -360,5 +360,6 @@ type = custom/script
 exec = $XDG_CONFIG_HOME/polybar/coronavirus.py
 interval = 3600
 format-underline = #CC241D
+click-left = "firefox https://www.worldometers.info/coronavirus/country/poland/"
 
 ; vim:ft=dosini

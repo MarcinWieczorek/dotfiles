@@ -9,7 +9,7 @@ export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export TASKDATA="$XDG_DATA_HOME"/task
 export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
 # confirm
-alias abook='/sbin/abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook'
+alias abook='/usr/bin/abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$XDG_DATA_HOME"/abook/addressbook'
 alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
