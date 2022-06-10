@@ -1,0 +1,329 @@
+- name: Setup ArchLinux (assumes archiso system)
+  hosts: managed
+  vars:
+    system_drive: /dev/sda
+    luks_pass: "root"
+    root_pass: "root"
+    lvm_group: MyVolGroup
+    hostname: testhost
+
+  tasks:
+  - name: Detect UEFI
+    ansible.builtin.set_fact:
+      # uefi: "{{ 'EFI' in ansible_bios_vendor }}"
+      uefi: true
+
+  - name: Set BIOS variables
+    ansible.builtin.set_fact:
+      boot_device: "{{ system_drive }}2"
+      luks_device: "{{ system_drive }}3"
+      boot_mountpoint: "/mnt/boot"
+    when: not uefi
+
+  - name: Set UEFI variables
+    ansible.builtin.set_fact:
+      boot_device: "{{ system_drive }}p1"
+      luks_device: "{{ system_drive }}p2"
+      boot_mountpoint: "/mnt/efi"
+    when: uefi
+
+  - name: Show UEFI information
+    ansible.builtin.debug:
+      msg: "Using UEFI: {{ uefi }}"
+
+  - name: Show used LUKS device
+    ansible.builtin.debug:
+      msg: "luks_device: {{ luks_device }}"
+
+  - name: Create BIOS partition
+    community.general.parted:
+      device: "{{ system_drive }}"
+      label: gpt
+      number: 1
+      state: present
+      part_end: 1MiB
+      flags: bios_grub
+    when: not uefi
+
+  - name: Create boot partition (BIOS)
+    community.general.parted:
+      device: "{{ system_drive }}"
+      label: gpt
+      number: 2
+      state: present
+      part_start: 1MiB
+      part_end: 200MiB
+    when: not uefi
+
+  - name: Create system partition (BIOS)
+    community.general.parted:
+      device: "{{ system_drive }}"
+      label: gpt
+      number: 3
+      state: present
+      part_start: 200MiB
+    when: not uefi
+
+  - name: Create UEFI partition
+    community.general.parted:
+      device: "{{ system_drive }}"
+      label: gpt
+      fs_type: fat32
+      number: 1
+      state: present
+      part_end: 300MiB
+      flags: esp
+    when: uefi
+
+  - name: Create system partition (UEFI)
+    community.general.parted:
+      device: "{{ system_drive }}"
+      label: gpt
+      number: 2
+      state: present
+      part_start: 300MiB
+    when: uefi
+
+  - name: Create LUKS container
+    community.crypto.luks_device:
+      device: "{{ luks_device }}"
+      state: opened
+      name: cryptlvm
+      passphrase: "{{ luks_pass }}"
+      pbkdf:
+        algorithm: pbkdf2
+
+  - name: Convert key to pbkdf2 (UEFI)
+    ansible.builtin.shell: echo "{{ luks_pass }}" | cryptsetup luksConvertKey --hash sha256 --pbkdf pbkdf2 "{{ luks_device }}"
+    when: uefi
+
+  # LUKS keyfile is used to avoid double entry of password
+  # TODO chmod 600 initramfs (otherwise luks key can leak)
+  #      chmod 600 /boot/initramfs-linux*
+  # TODO move after creating volumes and mounting
+  - name: Create luks keyfile (UEFI)
+    ansible.builtin.file:
+      path: /mnt/crypto_keyfile.bin
+      mode: '600'
+      state: touch
+    register: luks_keyfile
+    when: uefi
+
+  - name: Generate luks keyfile (UEFI)
+    ansible.builtin.command: dd bs=512 count=4 if=/dev/random of=/mnt/crypto_keyfile.bin iflag=fullblock
+    when: uefi and luks_keyfile.changed
+
+  - name: Add luks keyfile (UEFI)
+    community.crypto.luks_device:
+      device: "{{ luks_device }}"
+      new_keyfile: /mnt/crypto_keyfile.bin
+      passphrase: "{{ luks_pass }}"
+    when: uefi
+
+  - name: Create LVM group
+    lvg:
+      vg: "{{ lvm_group }}"
+      pvs: /dev/mapper/cryptlvm
+
+  - name: Create logical swap
+    community.general.lvol:
+      lv: swap
+      size: 16G
+      vg: "{{ lvm_group }}"
+
+  - name: Create logical root
+    community.general.lvol:
+      lv: root
+      size: 60G
+      # size: "100%FREE"
+      vg: "{{ lvm_group }}"
+      shrink: no
+
+  - name: Create logical home
+    community.general.lvol:
+      lv: home
+      size: "100%FREE"
+      vg: "{{ lvm_group }}"
+      shrink: no
+
+  # TODO use loops for filesystem
+  - name: Create boot filesystem (BIOS)
+    community.general.filesystem:
+      dev: "{{ boot_device }}"
+      fstype: ext4
+    when: not uefi
+
+  - name: Create boot filesystem (UEFI)
+    community.general.filesystem:
+      dev: "{{ boot_device }}"
+      fstype: vfat
+    when: uefi
+
+  - name: Create swap filesystem
+    community.general.filesystem:
+      dev: "/dev/{{ lvm_group }}/swap"
+      fstype: swap
+
+  - name: Create root filesystem
+    community.general.filesystem:
+      dev: "/dev/{{ lvm_group }}/root"
+      fstype: ext4
+
+  - name: Create home filesystem
+    community.general.filesystem:
+      dev: "/dev/{{ lvm_group }}/home"
+      fstype: ext4
+
+  - name: Mount root filesystem
+    mount:
+      src: "/dev/{{ lvm_group }}/root"
+      path: /mnt
+      state: mounted
+      fstype: ext4
+
+  - name: Mount home filesystem
+    mount:
+      src: "/dev/{{ lvm_group }}/home"
+      path: /mnt/home
+      state: mounted
+      fstype: ext4
+
+  # - name: Create EFI directory
+  #   file:
+  #     path: "{{ boot_mountpoint }}"
+  #     state: directory
+
+  - name: Mount boot filesystem (BIOS)
+    mount:
+      src: "{{ boot_device }}"
+      path: "{{ boot_mountpoint }}"
+      state: mounted
+      fstype: ext4
+    when: not uefi
+
+  - name: Mount boot filesystem (UEFI)
+    mount:
+      src: "{{ boot_device }}"
+      path: "{{ boot_mountpoint }}"
+      state: mounted
+      fstype: vfat
+    when: uefi
+
+  - name: Check if swap already enabled
+    ansible.builtin.command: swapon -s
+    register: swapon_s
+    changed_when: false
+
+  - name: Enable swap partition
+    ansible.builtin.command: "swapon /dev/{{ lvm_group }}/swap"
+    when: swapon_s.stdout == ""
+
+  - name: Pacstrap packages
+    ansible.builtin.command: pacstrap /mnt base base-devel linux linux-firmware git lvm2 dhclient vim openssh grub --needed
+
+  - name: Pacstrap UEFI packages
+    ansible.builtin.command: pacstrap /mnt efibootmgr --needed
+
+  - name: Generate fstab
+    ansible.builtin.shell: genfstab -U /mnt > /mnt/etc/fstab
+
+  - name: Prepare script for chroot
+    ansible.builtin.copy:
+      dest: /mnt/root/chroot.sh
+      mode: '744'
+      content: |
+        ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+        hwclock --systohc
+        locale-gen
+        echo "root:{{ root_pass }}" | chpasswd
+
+  - name: Run script chrooted
+    ansible.builtin.command: arch-chroot /mnt /root/chroot.sh
+
+  - name: Set hostname
+    ansible.builtin.copy:
+      dest: /mnt/etc/hostname
+      mode: '644'
+      content: "{{ hostname }}\n"
+
+  - name: Add hostname to /etc/hosts
+    # noqa: no-tabs
+    ansible.builtin.blockinfile:
+      dest: /mnt/etc/hosts
+      insertafter: EOF
+      block: "127.0.0.1\t{{ hostname }}.localdomain\t{{ hostname }}"
+
+  # - name: Change root password
+  #   shell: arch-chroot /mnt ''
+  #   no_log: true
+  # shell: 'echo "{{ root_pass }}\n{{ root_pass }}" | passwd root'
+  # ansible.builtin.expect:
+  #   command: arch-chroot /mnt passwd root
+  #   responses:
+  #     (?i)password: "{{ root_pass }}"
+
+  - name: Configure mkinitcpio HOOKS
+    ansible.builtin.replace:
+      path: /mnt/etc/mkinitcpio.conf
+      regexp: "HOOKS=\\(base udev autodetect modconf block filesystems keyboard fsck\\)"
+      replace: "HOOKS=(base udev keyboard autodetect modconf block encrypt lvm2 filesystems fsck)"
+
+  - name: Configure mkinitcpio FILES
+    ansible.builtin.replace:
+      path: /mnt/etc/mkinitcpio.conf
+      regexp: "FILES=\\(\\)"
+      replace: "FILES=(/crypto_keyfile.bin)"
+
+  - name: Regenerate system image
+    ansible.builtin.command: arch-chroot /mnt mkinitcpio -P
+
+  - name: Install grub on partition (BIOS)
+    ansible.builtin.command: arch-chroot /mnt grub-install --target=i386-pc {{ system_drive }}
+    when: not uefi
+
+  - name: Install grub on partition (UEFI)
+    ansible.builtin.command: arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+    when: uefi
+
+  - name: Generate grub config
+    ansible.builtin.command: arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+  - name: Fetch UUID of root device
+    ansible.builtin.shell: 'blkid | grep -Po "{{ luks_device }}: UUID=\"\K.{36}"'
+    register: crypt_uuid
+
+  - name: Fetch UUID of root device without dashes
+    ansible.builtin.shell: lsblk -no TYPE,UUID {{ luks_device }} | awk '$1=="part"{print $2}' | tr -d -
+    register: crypt_uuid_nodash
+
+  - name: Generate grub-pre config (UEFI)
+    ansible.builtin.copy:
+      dest: /mnt/root/grub-pre.cfg
+      mode: 0600
+      owner: root
+      group: root
+      content: |
+        set crypto_uuid={{ crypt_uuid_nodash.stdout }}
+        cryptomount -u $crypto_uuid
+        set root=lvm/{{ lvm_group }}-root
+        set prefix=($root)/boot/grub
+        insmod normal
+        normal
+    when: uefi
+
+  - name: Generate grubx64.efi (UEFI)
+    ansible.builtin.command: arch-chroot /mnt grub-mkimage -p /boot/grub -O x86_64-efi -c /root/grub-pre.cfg -o /root/grubx64.efi luks2 part_gpt cryptodisk gcry_rijndael pbkdf2 gcry_sha256 ext2 lvm
+    when: uefi
+
+  - name: Install grubx64.efi (UEFI)
+    ansible.builtin.command: arch-chroot /mnt install -v /root/grubx64.efi /efi/EFI/GRUB/grubx64.efi
+    when: uefi
+
+  - name: Add crypt device to grub config
+    # noqa: no-tabs
+    ansible.builtin.replace:
+      path: /mnt/boot/grub/grub.cfg
+      regexp: "linux	/boot/vmlinuz-linux root=/dev/mapper/{{ lvm_group }}-root rw  loglevel=3 quiet"
+      replace: "linux	/boot/vmlinuz-linux cryptdevice=UUID={{ crypt_uuid.stdout }}:cryptlvm root=/dev/{{ lvm_group }}/root rw  loglevel=3 quiet"
+
+  # TODO clean root directory from lefovers
