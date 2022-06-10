@@ -13,7 +13,7 @@
     when: ansible_distribution == "Archlinux"
 
   - name: (Debian) Install stubby and dnsmasq
-    apt:
+    ansible.builtin.apt:
       name:
       - stubby
       - dnsmasq
@@ -29,7 +29,7 @@
     when: ansible_facts.os_family == "void"
 
   - name: stubby - Remove default upstreams
-    replace:
+    ansible.builtin.replace:
       path: /etc/stubby/stubby.yml
       after: "DEFAULT UPSTREAMS"
       before: "OPTIONAL UPSTREAMS"
@@ -37,7 +37,7 @@
       replace: "#\\1"
 
   - name: stubby - uncomment cloudflare (ipv4)
-    replace:
+    ansible.builtin.replace:
       dest: /etc/stubby/stubby.yml
       after: "## Cloudflare"
       before: "## The Uncensored DNS servers"
@@ -45,7 +45,7 @@
       replace: "\\1"
 
   - name: stubby - uncomment cloudflare (ipv4)
-    replace:
+    ansible.builtin.replace:
       dest: /etc/stubby/stubby.yml
       after: "## Cloudflare servers"
       before: "## Google"
@@ -53,14 +53,14 @@
       replace: "\\1"
 
   - name: stubby - Change listen port to 53000
-    replace:
+    ansible.builtin.replace:
       dest: /etc/stubby/stubby.yml
       after: "listen_addresses:"
       regexp: "(- (127.0.0.1|0::1))$"
       replace: "\\1@53000"
 
   - name: Change dnsmasq connect port to 53000
-    blockinfile:
+    ansible.builtin.blockinfile:
       path: /etc/dnsmasq.conf
       insertafter: EOF
       content: |
@@ -71,37 +71,37 @@
         listen-address=::1,127.0.0.1
 
   - name: dnsmasq - Start and enable service
-    service:
+    ansible.builtin.service:
       name: dnsmasq
       enabled: yes
       state: started
 
   - name: stubby - Start and enable service
-    service:
+    ansible.builtin.service:
       name: stubby
       enabled: yes
       state: started
 
   - name: Read contents of resolv.conf
-    command: cat /etc/resolv.conf
+    ansible.builtin.command: cat /etc/resolv.conf
     changed_when: false
     register: resolvconf_content
 
   - name: Allow modification of resolv.conf
-    file:
+    ansible.builtin.file:
       path: /etc/resolv.conf
       attr: -i
     when: resolvconf_content.stdout != resolvconf_correct
 
   - name: Set resolv to localhost (dnsmasq)
-    copy:
+    ansible.builtin.copy:
       dest: /etc/resolv.conf
       mode: '0644'
       content: "{{ resolvconf_correct }}\n"
     when: resolvconf_content.stdout != resolvconf_correct
 
   - name: Prevent modification of resolv.conf
-    file:
+    ansible.builtin.file:
       path: /etc/resolv.conf
       attr: +i
     when: resolvconf_content.stdout != resolvconf_correct
