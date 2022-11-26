@@ -1,3 +1,5 @@
+[init]
+	defaultBranch = master
 [user]
 	email = marcin@marcin.co
 	name = Marcin Wieczorek
@@ -18,3 +20,14 @@
 	icontheme = dark
 [gui]
 	editor = gvim
+[diff]
+	tool = xxdiff
+
+[diff "tgz"]
+        binary = true
+        textconv = tar -tvf
+[diff "zip"]
+        binary = true
+        textconv = zipinfo
+[core]
+        attributesFile = ~/.config/git/gitattributes
