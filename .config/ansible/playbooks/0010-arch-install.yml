@@ -121,7 +121,7 @@
     when: uefi
 
   - name: Create LVM group
-    lvg:
+    community.general.lvg:
       vg: "{{ lvm_group }}"
       pvs: /dev/mapper/cryptlvm
 
@@ -137,14 +137,14 @@
       size: 60G
       # size: "100%FREE"
       vg: "{{ lvm_group }}"
-      shrink: no
+      shrink: false
 
   - name: Create logical home
     community.general.lvol:
       lv: home
       size: "100%FREE"
       vg: "{{ lvm_group }}"
-      shrink: no
+      shrink: false
 
   # TODO use loops for filesystem
   - name: Create boot filesystem (BIOS)
@@ -175,14 +175,14 @@
       fstype: ext4
 
   - name: Mount root filesystem
-    mount:
+    ansible.posix.mount:
       src: "/dev/{{ lvm_group }}/root"
       path: /mnt
       state: mounted
       fstype: ext4
 
   - name: Mount home filesystem
-    mount:
+    ansible.posix.mount:
       src: "/dev/{{ lvm_group }}/home"
       path: /mnt/home
       state: mounted
@@ -194,7 +194,7 @@
   #     state: directory
 
   - name: Mount boot filesystem (BIOS)
-    mount:
+    ansible.posix.mount:
       src: "{{ boot_device }}"
       path: "{{ boot_mountpoint }}"
       state: mounted
@@ -202,7 +202,7 @@
     when: not uefi
 
   - name: Mount boot filesystem (UEFI)
-    mount:
+    ansible.posix.mount:
       src: "{{ boot_device }}"
       path: "{{ boot_mountpoint }}"
       state: mounted

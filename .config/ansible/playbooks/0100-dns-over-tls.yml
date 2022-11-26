@@ -1,11 +1,11 @@
 - name: Setup secure DNS
-  hosts: managed
+  hosts: test
   vars:
     resolvconf_correct: "nameserver 127.0.0.1"
 
   tasks:
   - name: (Arch) Install stubby and dnsmasq
-    pacman:
+    community.general.packaging.os.pacman:
       name:
       - stubby
       - dnsmasq
@@ -21,7 +21,7 @@
     when: ansible_facts.os_family == "Debian"
 
   - name: (Void) Install stubby and dnsmasq
-    xbps:
+    community.general.packaging.os.xbps:
       name:
       - stubby
       - dnsmasq
@@ -73,13 +73,13 @@
   - name: dnsmasq - Start and enable service
     ansible.builtin.service:
       name: dnsmasq
-      enabled: yes
+      enabled: true
       state: started
 
   - name: stubby - Start and enable service
     ansible.builtin.service:
       name: stubby
-      enabled: yes
+      enabled: true
       state: started
 
   - name: Read contents of resolv.conf

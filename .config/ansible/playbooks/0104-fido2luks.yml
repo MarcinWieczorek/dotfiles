@@ -12,7 +12,7 @@
 
   tasks:
   - name: (Arch) Install dependencies
-    pacman:
+    community.general.packaging.os.pacman:
       name:
       - rust
       - fido2luks
@@ -69,15 +69,18 @@
     when: fido2luks_token_list.changed
     ansible.builtin.tempfile:
     register: luks_pass_file
-    changed_when: no
+    changed_when: false
 
   - name: Put LUKS password in temporary file
     when: fido2luks_token_list.changed
     ansible.builtin.copy:
       dest: "{{ luks_pass_file.path }}"
       content: "{{ luks_pass }}"
-    diff: no
-    changed_when: no
+      owner: root
+      group: root
+      mode: 0600
+    diff: false
+    changed_when: false
 
   - name: Add new key to LUKS - PHYSICALLY CONFIRM WITH THE KEY!
     when: fido2luks_token_list.changed
