@@ -4,7 +4,7 @@
 name=`nmcli -t connection show|grep "vpn:."|awk -F: '{print $1}'`
 
 [[ -z "$name" ]] \
-    && echo "VPN down" \
+    && echo "" \
     || echo -n "$name" | tr '\n' '|'
 
 # if [[ -z "$name" ]]; then

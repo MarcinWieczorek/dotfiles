@@ -93,9 +93,17 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias xclip="/usr/bin/xclip -selection c"
 alias ptpb="curl -F 'f:1=<-' ix.io"
+alias scap='maim -s ~/Downloads/scrot_$(date "+%Y%m%d_%H%M%S").png'
 alias ssh='TERM=linux ssh'
 alias e="emacsclient -s instance1 -n "
 alias dc="docker-compose"
+alias pip-upgrade="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+alias wsjtx="/usr/bin/wsjtx --stylesheet :/qdarkstyle/style.qss"
+# git
+alias gp="git pull"
+alias gch="git checkout"
+loop() { n=$1; shift; for run in {1..$n}; do $@; done }
+loopp() { n=$1; shift; for run in {1..$n}; do $@ &; done }
 
 # default user:
 DEFAULT_USER='marcin'
@@ -116,10 +124,17 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 source "$XDG_CONFIG_HOME/xdg_war.sh"
+unalias wget
+wget() { curl "$1" -o `basename "$1"` }
 
 # User-specific config
 unalias rm # rm -i
 export CHROOT=$HOME/chroot
 export TERMINAL=alacritty
+export DOCKER_BUILDKIT=1
+export BUILDKIT_PROGRESS=plain
 zstyle ':completion:*' rehash true
 bindkey '^H' backward-kill-word
+
+# fzf
+source /usr/share/fzf/key-bindings.zsh
